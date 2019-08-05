@@ -33,3 +33,16 @@
 # 2. Bài tập
 
 **Đề bài**: `Minesweeper`
+
+![](./media/minesweeper.png)
+
+# 3. Tài liệu tham khảo
+
+- [HTTP Methods](https://www.tutorialspoint.com/http/http_methods.htm)
+- [Json Web Token](https://jwt.io/)
+- [Restful API Design](https://hackernoon.com/restful-api-designing-guidelines-the-best-practices-60e1d954e7c9)
+- [React Router](https://reacttraining.com/react-router/web/example/basic)
+- [ReactJS Documentation](https://reactjs.org/docs/getting-started.html)
+- [Ant.design](https://ant.design/)
+- [Redux](https://insights.innovatube.com/redux-th%E1%BA%ADt-l%C3%A0-%C4%91%C6%A1n-gi%E1%BA%A3n-ph%E1%BA%A7n-1-76a3fa2c31ab)
+- [Learn how to use JSON Web Tokens (JWT) for much Authentication win!](https://github.com/dwyl/learn-json-web-tokens)

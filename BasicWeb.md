@@ -30,4 +30,15 @@
 
 ## 2.1. Basic JavaScript
 
+![](./media/image-gallery.png)
+
 ## 2.2. Color Chooser
+
+![](./media/color-picker.png)
+
+# 3. Tài liệu tham khảo
+
+- [The Ultimate VSCode Setup for Front End/JS/React](https://medium.com/productivity-freak/the-ultimate-vscode-setup-for-js-react-6a4f7bd51a2)
+- [Tutorial for HTML, CSS, JavaScript](https://www.w3schools.com/)
+- [CORS](https://spring.io/understanding/CORS)
+- [UI/UX](https://gitlab.zalopay.vn/vuongvx/ui-ux)
