@@ -755,7 +755,11 @@ Nếu xử lý theo cách này thì dù bạn có thực hiện thêm nhiều re
 
 #### 1.2.5.1. lodash
 
+[lodash](https://toidicodedao.com/2015/04/16/tang-suc-manh-cho-javascript-voi-lodash/)
+
 #### 1.2.5.2. moment
+
+[moment](https://viblo.asia/p/gioi-thieu-ve-momentjs-63vKjnwAK2R)
 
 # 2. Bài tập
 
@@ -795,3 +799,4 @@ Nếu xử lý theo cách này thì dù bạn có thực hiện thêm nhiều re
 - https://developer.mozilla.org/vi/docs/Web/JavaScript/Closures
 - https://viblo.asia/p/oop-trong-javascript-gDVK2joAKLj
 - https://toidicodedao.com/2015/04/16/tang-suc-manh-cho-javascript-voi-lodash/
+- https://viblo.asia/p/gioi-thieu-ve-momentjs-63vKjnwAK2R
