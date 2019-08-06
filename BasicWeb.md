@@ -765,6 +765,10 @@ Nếu xử lý theo cách này thì dù bạn có thực hiện thêm nhiều re
 
 ## 2.1. Basic JavaScript
 
+https://www.aspsnippets.com/Articles/HTML5-Show-Display-multiple-image-preview-before-upload-with-FileUpload-control-using-JavaScript-and-jQuery.aspx
+
+https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+
 ![](./media/image-gallery.png)
 
 ## 2.2. Color Chooser
