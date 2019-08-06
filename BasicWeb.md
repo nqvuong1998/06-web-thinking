@@ -741,13 +741,11 @@ Nếu xử lý theo cách này thì dù bạn có thực hiện thêm nhiều re
 
 ### 1.2.3. Closure, Scope
 
-#### Scope
-
-#### Closure
-
-
+[Closure và scope](https://developer.mozilla.org/vi/docs/Web/JavaScript/Closures)
 
 ### 1.2.4. OOP trong JavaScript
+
+[OOP](https://viblo.asia/p/oop-trong-javascript-gDVK2joAKLj)
 
 #### 1.2.4.1. Prototype
 
@@ -794,4 +792,6 @@ Nếu xử lý theo cách này thì dù bạn có thực hiện thêm nhiều re
 - https://blog.bitsrc.io/understanding-asynchronous-javascript-the-event-loop-74cd408419ff
 - https://ehkoo.com/bai-viet/tat-tan-tat-ve-promise-va-async-await
 - https://kipalog.com/posts/Closure-va-scope-trong-javascript
-- 
+- https://developer.mozilla.org/vi/docs/Web/JavaScript/Closures
+- https://viblo.asia/p/oop-trong-javascript-gDVK2joAKLj
+- https://toidicodedao.com/2015/04/16/tang-suc-manh-cho-javascript-voi-lodash/
