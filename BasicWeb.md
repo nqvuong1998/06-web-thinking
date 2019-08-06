@@ -45,11 +45,11 @@ HTML5 được thiết kế để có thể sử dụng trên tất cả cá nh�
 - Border: phần khung bao bọc xung quanh padding và content
 Margin: cuối cùng, margin là phần ngoài cùng của Box Model, chỉ là một khoảng trống không màu
 
-**Content**:
+##### Content
 
 Tiếp tục nhắc lại content là phần xuất hiện của text và hình ảnh, phần này không có gì đặc biệt để nói cho lắm, tổng kích cở của text bao nhiêu (có thể lớn nhỏ nếu chúng ta tùy chỉnh font-size) hay hình ảnh bao lớn thì đó cũng là kích cở của content. Tuy nhiên, có một điều cần chú ý là content và hai thuộc tính height và width, khi chúng ta đặt một height hay một width hoặc thậm chí cả hai cho một element thì height và width này chỉ tác động lên một vùng duy nhất đó là content chứ không hề đá động gì đến padding, border hay margin cả. Vậy, phần kích thước đầu tiên của Box Model đó chính là content.
 
-**Padding**:
+##### Padding
 
 Nói đơn giản về padding thì nó là thuộc tính dùng để tạo ra một vùng khoảng trống bao bọc xung quanh content và nó sẽ nằm bên trong border. Khi xét padding cho một element ta có thể xét theo 2 kiểu:
 
@@ -83,7 +83,7 @@ Thì như đã nói ở trên thằng width là chỉ xét cho mỗi phần cont
 
 ![](https://s3-ap-southeast-1.amazonaws.com/kipalog.com/aj7pasxma5_image.png)
 
-**Border**:
+##### Border
 
 Border, lớp tiếp theo của Box Model, bỏ qua các phần trang trí màu mè của nó, chúng ta chỉ xét tới các phần như border-width hay xét border cho các mặt của element. Thứ nhất, nói sơ qua cấu trúc border thì nó sẽ gồm có:
 
@@ -109,7 +109,7 @@ div{
 
 Như trên là chúng có ta một div với chiều rộng là 400px nếu chúng ta thêm vào dòng border:5px solid orange thì chiều rộng của div sẽ lên là 410px vì nó được cộng thêm 5px của border bên trái và 5px của border bên phải. Tuy nhiên, nếu ta chỉ thêm vào border-left:5px solid orange thì chiều rộng của div chỉ là 405px vì chỉ có 5px của border trái còn bên phải thì làm gì có mà thêm.
 
-**Margin**:
+##### Margin
 
 Lớp cuối cùng của Box Model đó chính là lớp margin bên ngoài, margin là một thuộc tính dùng để tạo khoảng cách xung quanh element để cách element đó với các thứ khác và phần margin sẽ nằm bên ngoài border. Giống như padding thì margin cũng được xét theo hai kiểu, một là:
 
@@ -180,7 +180,7 @@ total = 300px + 30px + 30px + 10px + 10px + 20px + 20px = 420px.
 
 Flexbox là một kiểu dàn trang (layout mode) mà nó sẽ tự cân đối kích thước của các phần tử bên trong để hiển thị trên mọi thiết bị. Nói theo cách khác, bạn không cần thiết lập kích thước của phần tử, không cần cho nó float, chỉ cần thiết lập nó hiển thị chiều ngang hay chiều dọc, lúc đó các phần tử bên trong có thể hiển thị theo ý muốn.
 
-**Cấu trúc**:
+##### Cấu trúc
 
 ![](https://thachpham.com/wp-content/uploads/2016/06/flex_terms.jpg)
 
@@ -196,7 +196,7 @@ Ngoài hai thành phần chính đó, chúng ta có thể thấy hình trên s�
 - **main size**: Bạn có thể hiểu đơn giản là kích thước (chiều rộng hoặc dọc) của mỗi item dựa theo trục main axis.
 - **cross size**: Là kích thước (chiều rộng hoặc dọc) của mỗi item dựa theo trục cross axis.
 
-**Bắt đầu với Flexbox**:
+##### Bắt đầu với Flexbox
 
 Bạn sẽ thấy các item bên trong đã tự hiển thị theo chiều dọc, tương ứng với trục main axis mặc định là chiều ngang.
 
@@ -328,13 +328,13 @@ Thuộc tính này có 5 giá trị và bạn có thể xem tấm ảnh bên dư
 
 #### 1.1.2.3. Media Queries
 
-**Media Query là gì?**
+##### Media Query là gì?
 
 Media Query là một trong những module mới được thêm vào trong CSS3. Nó là một sự cải thiện của Media Type đã có từ CSS2, bằng việc thêm vào những cú pháp query để ta có thể đáp ứng được cho nhiều device với nhiều kích cỡ màn hình khác nhau.
 
 Module Media Query hiện đã được implement đầy đủ trong các trình duyện hiện đại như Webkit, Firefox, Opera hay IE (kể từ version 9).
 
-**Media Type**
+##### Media Type
 
 Trước khi tìm hiểu về cú pháp của Media Query, trước hết ta hãy nói qua về Media Type trước.
 
@@ -372,7 +372,7 @@ Chẳng hạn như ta có đoạn code sau:
 
 Chú ý rằng từ HTML5 thì giá trị default của media type là all, thế nên mặc định thì các CSS rules của bạn viết sẽ được áp dụng cho tất cả các loại màn hình.
 
-**Media Query Syntax**
+##### Media Query Syntax
 
 Cú pháp của Media Query được mở rộng ra từ cú pháp của Media Type như sau: `@media media_type (feature:value) { rules }`
 
@@ -382,7 +382,7 @@ Các thuộc tính feature và value sẽ giúp chúng ta xác định chính x�
 
 Ngoài ra thì như đã nói mặc định của Media Type sẽ luôn là `all`, thế nên ta có thể lược bỏ phần `media_type` ở trên nếu muốn nó được apply cho tất cả các devices.
 
-**Một số Media Feature quan trọng**
+##### Một số Media Feature quan trọng
 
 - `width`, `height`: Nếu sử dụng feature này thì các css rules sẽ chỉ được áp dụng cho những browser có chiều rộng hoặc chiều cao đúng với thông số mà ta đã đưa ra. Chẳng hạn như @media (width: 900px) {rules} thì sẽ chỉ áp dụng cho những browser nào có kích cỡ chiều rộng đúng bằng 900px. Thế nên hai feature này rất ít khi được sử dụng. Thay vào đó người ta thêm các tiền tố min- hay max- và để được các feature sau: min-width, min-height, max-width, max-height. Đây là feature cho phép ta thiết lập những rules cho những browser có chiều rộng hay chiều dài nằm trong một khoảng nào đó. Ví dụ:
 
@@ -445,7 +445,7 @@ Ngoài ra ta có các ví dụ khác như sau:
 @media not (device-aspect-ratio: 4/3) { body {font-size: 15px;} }
 ```
 
-**Sử dụng Media Query hiệu quả**
+##### Sử dụng Media Query hiệu quả
 
 Có 3 cách để sử dụng Media Query. Cách thứ nhất, như đã đề cập ở phía trước, đó là sử dụng từ khoá `@media` để tính toán rules bên trong một stylesheet: `@media (expression) { body {font-size: 15px} }`
 
@@ -472,27 +472,88 @@ Cách thứ 3 đó là sử dụng từ khoá `@import` để load một externa
 <link href="desktop.css" rel="stylesheet" media="min-device-width: 640px">
 ```
 
-`Tại sao lại nên làm như vậy?`
+**Tại sao lại nên làm như vậy?**
 
 Đó là bởi giao diện dành cho những thiết bị màn hình lớn bao giờ cũng chứa những hình ảnh với kích cỡ to, và độ phân giải cao hơn so với những thiết bị màn hình nhỏ. Do đó nếu ta để những rules dành cho Desktop vào basic, và load trước thì bao giờ những assets có dung lượng tương đối lớn đó cũng được load. Giả dụ như ta có thêm trường display: none vào để ẩn nó đi trên những màn hình nhỏ đi chăng nữa thì nó vẫn được load vào lưu vào cache, điều đó dẫn đến tốc độ duyệt trang web của ta sẽ bị ảnh hưởng khi sử dụng các thiết bị mobile. Bởi vậy, nếu bạn muốn hiển thị nhiều hình ảnh cho Desktop thì hãy viết ra một external stylesheet riêng, và hãy thiết lập Media Query để nó chỉ được load khi thiết bị truy cập có màn hình lớn mà thôi.
 
 ### 1.1.3. Responsive Web Design
 
+#### Responsive Web Design là gì?
+
+Responsive Web Design là làm cho trang web của bạn có thể xem tốt trên tất cả các thiết bị. Responsive Web Design chỉ sử dụng HTML và CSS. Responsive Web Design không phải là một chương trình hoặc đoạn mã JavaScript.
+
+**Thiết kế mang lại trải nghiệm tốt nhất cho người dùng**
+
+Các trang web có thể được xem bằng nhiều thiết bị khác nhau: máy tính để bàn, máy tính bảng và điện thoại. Trang web của bạn nên nhìn đẹp và dễ sử dụng trên bất kể thiết bị nào. Các trang web không nên để nội dung tràn ra ngoài trên các thiết bị có kích thước nhỏ, mà phải thích ứng với nội dung của nó để phù hợp với bất kỳ thiết bị nào. Hình ảnh dưới đây sẽ mô tả đơn giản một ví dụ về RWD.
+
+![](https://viblo.asia/uploads/91392a4c-c012-4569-a5e2-41659b8968a6.png)
+
+Và nó được gọi là RWD khi bạn sử dụng CSS và HTML để thay đổi kích thước, ẩn, co lại, phóng to hoặc di chuyển nội dung để làm cho bố cục trang web trở nên tương thích ở bất kỳ màn hình nào.
+
+#### Responsive Web Design - Viewport
+
+**Viewport là gì?**
+
+Viewport tạm dịch là khung nhìn, là khu vực có thể nhìn thấy của người dùng về nội dung trong một trang web. Viewport sẽ khác nhau với các thiết bị khác nhau, và sẽ nhỏ hơn trên điện thoại di động so với trên màn hình máy tính. Trước khi thiết kế cho máy tính bảng và điện thoại di động, các trang web chỉ được thiết kế cho màn hình máy tính và thông thường các trang web có thiết kế tĩnh và có kích thước cố định. Sau đó, khi chúng ta bắt đầu lướt web bằng cách sử dụng máy tính bảng và điện thoại di động, các trang web có kích thước cố định đã quá lớn để phù hợp với người dùng. Để khắc phục điều này, các trình duyệt trên các thiết bị này tự động thu nhỏ toàn bộ trang web để vừa với màn hình. Khi chiều ngang của thiết bị quá nhỏ, người dùng phải vuốt ngang để xem hết nội dung của trang web hoặc xem trang web với nội dung quá nhỏ và cần phải zoom để đọc được nội dung. Rõ ràng, đây là một trải nghiệm không tốt chút nào cho người dùng.
+
+**Thiết lập Viewport**
+
+HTML5 giới thiệu một phương pháp để cho phép các nhà thiết kế web kiểm soát viewport, thông qua thẻ `<meta>`. Bạn có thể thiết lập meta viewport bằng cách đặt vào trong cặp thẻ `<head>` như sau: `<meta name="viewport" content="width=device-width, initial-scale=1">`
+
+- Thẻ `<meta>` viewport thiết lập cho trang web hiển thị tương ứng với kích thước của từng thiết bị khác nhau.
+- Thuộc tính `width=device-width` đặt chiều rộng của trang web theo chiều rộng màn hình của thiết bị.
+- Thuộc tính `initial-scale=1.0` thiết lập mức độ phóng ban đầu khi trang được trình duyệt tải lần đầu tiên, người dùng sẽ không thể zoom khi thuộc tính này có giá trị bằng 1.
+
+#### Quy tắc khi thực hiện Responsive Web Design
+
+Nội dung web phải luôn nằm trong giới hạn kích thước của chiều ngang màn hình, người dùng chỉ cần cuộn dọc từ trên xuống để xem được hết nội dung của trang web dễ dàng. Vì vây, nếu để người dùng phải cuộn ngang hoặc zoom trang web mới xem được toàn bộ nội dung sẽ không phải là RWD và dẫn đến trải nghiệm người dùng kém. Một sổ quy tắc khác cần tuân thủ trong khi làm RWD: 
+1. Không sử dụng các HTML element có chiều rộng cố định quá lớn - Ví dụ: Một hình ảnh có chiều rộng quá lớn so với chiều rộng của các thiết bị nhỏ thì khi hiển thị trên các thiết bị này hình ảnh sẽ bị tràn ra ngoài và cần phải cuộn ngang để xem được toàn bộ ảnh. Vì vậy, cần phải điều chỉnh hỉnh ảnh sao cho phù hợp với chiều rộng của từng thiết bị. 
+2. Sử dụng CSS media queries để style cho từng thiết bị có chiều rộng khác nhau - Không nên sử dụng các giá trị tuyệt đối như px, pt cho các phần tử mang tính bao quát trong trang, điều này sẽ làm cho nội dung của trang web sẽ bị tràn khi xem ở thiết bị có chiều rộng nhỏ hơn giá trị đã thiết lập. Thay vì vậy, hãy sử dụng các giá trị mang tính tương đối như %, ví dụ như width: 100%. 
+3. Sử dụng icon SVG thay cho icon hỉnh ảnh thông thường (JPG, PNG,...) Các icon, hình ảnh dạng SVG sẽ không bị mờ khi thu phóng ở bất kỳ kích thước nào, điều này sẽ giúp nội dung của trang web hiển thị tốt nhất trên các thiết bị Retina như iPhone, iPad, Macbook,...
+
+#### Grid-View
+
+**Grid-View là gì?**
+
+Các trang web được dựa trên một Grid-View, có nghĩa là trang được chia thành các cột, việc xây dựng 1 Grid-View chuẩn sẽ giúp công việc thực hiện responsive về sau này thuận lợi hơn rất nhiều. Xem hình minh họa dưới đây để hình dung thế nào là 1 Grid-View.
+
+![](https://images.viblo.asia/4448212b-74ae-44a2-a597-8ccf682a0a30.png)
+
+Sử dụng Grid-View rất hữu ích khi thiết kế các trang web, nó giúp bạn dễ dàng đặt các phần tử trên trang. Hình dưới đây minh họa cho 1 trang web bao gồm header, footer, 2 sidebar và phần content ở giữa, bố cục của trang web này được phân chia dựa trên 1 Grid-View.
+
+![](https://images.viblo.asia/37a9003f-1bcd-4dc5-8e12-bd9e8cf3c91d.png)
+
+1 Grid-View thường có 12 cột và có tổng chiều rộng là 100%, sẽ tự động co giãn khi bạn thay đổi kích thước cửa sổ trình duyệt.
+
 ### 1.1.4. Màu sắc trong thiết kế Web
+
+[UI-UX](https://gitlab.zalopay.vn/vuongvx/ui-ux)
+
+![Color](https://gitlab.zalopay.vn/vuongvx/ui-ux/raw/master/image/y-nghia-color.jpg)
 
 ### 1.1.5. Một số CSS Framework
 
 #### 1.1.5.1. Bootstrap
 
+[Overview Bootstrap](https://viblo.asia/p/thu-vien-bootstrap-4P856a8AlY3)
+
 #### 1.1.5.2. Semantic UI
+
+[Overview Semantic UI](https://techblog.vn/tong-quan-ve-semantic-ui)
 
 ## 1.2. JavaScript
 
 ### 1.2.1. JavaScript Syntax
 
+[JS Syntax](https://www.w3schools.com/js/js_syntax.asp)
+
 ### 1.2.2. Async trong JavaScript
 
 #### 1.2.2.1. Callback
+
+
+
+
 
 #### 1.2.2.2. Promise
 
@@ -536,3 +597,12 @@ Cách thứ 3 đó là sử dụng từ khoá `@import` để load một externa
 - https://kipalog.com/posts/Cau-truc-CSS-Box-Model
 - https://thachpham.com/web-development/html-css/huong-dan-css3-flexbox-toan-tap.html
 - https://viblo.asia/p/tim-hieu-ve-media-query-3ZabG9oRzY6E
+- https://viblo.asia/p/tu-can-ban-den-nang-cao-ve-responsive-web-design-rwd-phan-1-Eb85oJ8Ol2G
+- https://viblo.asia/p/tu-can-ban-den-nang-cao-ve-responsive-web-design-rwd-phan-2-GrLZDpVeZk0
+- https://viblo.asia/p/co-ban-ve-ket-hop-mau-sac-trong-thiet-ke-website-yMnKMq0rK7P
+- https://viblo.asia/p/thu-vien-bootstrap-4P856a8AlY3
+- https://techblog.vn/tong-quan-ve-semantic-ui
+- https://toidicodedao.com/2017/10/10/async-await-trong-javascript/
+- https://toidicodedao.com/2015/02/05/callback-trong-javascript/
+- https://toidicodedao.com/2016/07/05/javascript-promise/
+- https://viblo.asia/p/callback-hell-trong-javascript-la-gi-va-cach-phong-trach-NbmvbaYKkYO
