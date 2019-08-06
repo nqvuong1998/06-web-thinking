@@ -1,0 +1,19 @@
+body{
+    background-color: rgba(192, 159, 97, 0.815);
+}
+
+h2 {
+    color: rgb(5, 5, 121);
+    margin-top: 5%;
+    text-align: center;
+}
+
+#buttons {
+    text-align: center;
+}
+
+img{
+    max-width: 25%;
+    height: auto;
+    margin: 5%;
+}
