@@ -4,7 +4,7 @@ body{
 
 h2 {
     color: rgb(5, 5, 121);
-    margin-top: 5%;
+    margin-top: 4%;
     text-align: center;
 }
 
@@ -12,8 +12,18 @@ h2 {
     text-align: center;
 }
 
-img{
-    max-width: 25%;
-    height: auto;
-    margin: 5%;
-}
+#photos {
+    line-height: 0;
+    -webkit-column-count: 5;
+    -webkit-column-gap:   5px;
+    -moz-column-count:    5;
+    -moz-column-gap:      5px;
+    column-count:         5;
+    column-gap:           5px;  
+  }
+  
+  #photos img {
+    width: 100% !important;
+    height: auto !important; 
+    margin-bottom: 5px;
+  }

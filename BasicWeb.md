@@ -769,6 +769,8 @@ https://www.aspsnippets.com/Articles/HTML5-Show-Display-multiple-image-preview-b
 
 https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 
+https://css-tricks.com/seamless-responsive-photo-grid/
+
 ![](./media/image-gallery.png)
 
 ## 2.2. Color Chooser
