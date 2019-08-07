@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Color Picker</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+
+  <div class="title">
+    <h1>Color Picker</h1>
+  </div>
+  
+  <div class="content">
+    <div class="result">
+      <div class="color"></div>
+      <div class="hex">
+          <p>#808080</p>
+      </div>
+    </div>
+
+    <div class="picker">
+      <div class="red-item">
+        <div class="red-model"></div>
+        <input id="red-slider" type="range" min="0" max="255" step="1">
+        <span id="red-code">128</span>
+      </div>
+      <div class="green-item">
+          <div class="green-model"></div>
+          <input id="green-slider" type="range" min="0" max="255" step="1">
+          <span id="green-code">128</span>
+        </div>
+        <div class="blue-item">
+            <div class="blue-model"></div>
+            <input id="blue-slider" type="range" min="0" max="255" step="1">
+            <span id="blue-code">128</span>
+          </div>
+    </div>
+  </div>
+
+  <div class="info">
+
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</body>
+</html>
