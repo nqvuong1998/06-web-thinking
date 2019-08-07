@@ -7,22 +7,20 @@
   <title>Image Gallery</title>
   
   <link rel="stylesheet" href="./css/style.css">
-  <script src="./js/script.js"></script>
 </head>
 <body>
   <h2>Image Gallery</h2>
-  <div id="buttons">
-    <input type="file" id="btn-choose" onchange="loadImages(this);" multiple>
+  <div class="buttons">
+
+    <input type="file" id="file" onchange="loadImages(this);" multiple/>
+    <label for="file" class="btn-file">Upload</label>
 
     <button type="button" id="btn-clear" onclick="removeImages();">Clear</button>
   </div>
   
-  <section id="photos">
-
-  </section>
-
-
+  <div id="photos">
+  </div>
   
-  
+  <script src="./js/script.js"></script>
 </body>
 </html>

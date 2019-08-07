@@ -1,16 +1,27 @@
-body{
-    background-color: rgba(192, 159, 97, 0.815);
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0px 5px 0px 5px;
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+    background: -webkit-linear-gradient(to bottom left, #a1c4fd, #c2e9fb);
+    background: linear-gradient(to bottom left, #a1c4fd, #c2e9fb);
 }
 
 h2 {
     color: rgb(5, 5, 121);
-    margin-top: 4%;
+    margin-top: 2%;
     text-align: center;
 }
 
-#buttons {
+.buttons {
     text-align: center;
+    margin-bottom: 10px; 
 }
+
 
 #photos {
     line-height: 0;
@@ -22,8 +33,40 @@ h2 {
     column-gap:           5px;  
   }
   
-  #photos img {
+img {
+    float: left;
     width: 100% !important;
     height: auto !important; 
-    margin-bottom: 5px;
-  }
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+img:hover {
+    transform: scale(1.01);
+}
+
+
+[type="file"] {
+    height: 0;
+    overflow: hidden;
+    width: 0;
+}
+  
+[type="file"] + label, #btn-clear{
+    background: #f15d22;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+      font-family: 'Poppins', sans-serif;
+      font-size: inherit;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    outline: none;
+    padding: 1rem 50px;
+    position: relative;
+    transition: all 0.3s;
+    vertical-align: middle;
+}
+  

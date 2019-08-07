@@ -1,7 +1,4 @@
-var count = 1;
-
 function loadImages(input) {
-    console.log(getWidth())
     var files = input.files;
 
     for(let file of files){
@@ -9,23 +6,18 @@ function loadImages(input) {
 
         reader.onload = function(e)  {
             var image = document.createElement('img');
-            image.id = 'img-'+count++;
-
             image.src = e.target.result;
             document.getElementById('photos').appendChild(image);
         }
-
         reader.readAsDataURL(file);
     }
  }
 
 function removeImages() {  
-    var images = document.getElementById('photos');
-    while(images.firstChild){
-        images.removeChild(images.firstChild);
-    }
-    var btnChoose = document.getElementById('btn-choose');
-    btnChoose.value = "";
+    let photos = document.getElementById('photos');
+    photos.innerHTML="";
+    let btnFile = document.getElementById('file');
+    btnFile.value = "";
 }
 
 function getWidth() {
@@ -39,7 +31,7 @@ function getWidth() {
 }
 
 window.addEventListener('resize', function(event){
-    var width = getWidth();
+    let width = getWidth();
 
     if(width<=400){
         changeColumnCount(1);
@@ -60,7 +52,8 @@ window.addEventListener('resize', function(event){
 });
 
 function changeColumnCount(size){
-    var style = document.getElementById('photos').style;
+    let style = document.getElementById('photos').style;
     style.webkitColumnCount = size;
     style.columnCount = size;
 }
+
