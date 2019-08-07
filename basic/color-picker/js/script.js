@@ -50,9 +50,9 @@ function getWidth() {
     );
 }
 
-window.addEventListener('resize', function(event){
+function customize(){
     let width = getWidth();
-    console.log(width);
+
     if(width<=400){
         changeWidthContent(100);
         changeMarginTopContent(20);
@@ -73,7 +73,14 @@ window.addEventListener('resize', function(event){
         changeWidthContent(35);
         changeMarginTopContent(8);
     }
-    
+}
+
+window.addEventListener('load', function(event){
+    customize();
+});
+
+window.addEventListener('resize', function(event){
+    customize();
 });
 
 function changeWidthContent(percent){

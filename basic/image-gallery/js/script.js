@@ -30,7 +30,7 @@ function getWidth() {
     );
 }
 
-window.addEventListener('resize', function(event){
+function customize(){
     let width = getWidth();
 
     if(width<=400){
@@ -48,7 +48,14 @@ window.addEventListener('resize', function(event){
     else{
         changeColumnCount(5);
     }
-    
+}
+
+window.addEventListener('load', function(event){
+    customize();
+});
+
+window.addEventListener('resize', function(event){
+    customize();
 });
 
 function changeColumnCount(size){
