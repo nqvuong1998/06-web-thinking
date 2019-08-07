@@ -1,0 +1,148 @@
+
+body{
+    background: #acb6e5;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #86fde8, #acb6e5); 
+    background: linear-gradient(to right, #86fde8, #acb6e5);
+}
+
+.all{
+    margin: auto;
+    margin-top: 15%;
+    width: 50%;
+    background: white;
+    border-radius: 10px;
+}
+
+.title {
+    border-radius: 10px 10px 0px 0px;
+    text-align: center;
+    padding: 15px;
+    background: #00b09b;
+    background: -webkit-linear-gradient(to right, #96c93d, #00b09b);
+    background: linear-gradient(to right, #96c93d, #00b09b);
+    color: black;
+    font-family: Abril Fatface;
+}
+
+.result{
+    display: block;
+    background-color: gray;
+    padding: 70px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.hex{
+    text-align: center;
+    font-size: 2em;
+}
+
+.item{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 15px;
+}
+
+.red-model{
+    background: red;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.green-model{
+    background: green;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.blue-model{
+    background: blue;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#red-code {
+    font-size: 1.5em;
+}
+
+#green-code {
+    font-size: 1.5em;
+}
+
+#blue-code {
+    font-size: 1.5em;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  
+.slider:hover {
+    opacity: 1;
+}
+  
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: yellowgreen;
+    cursor: pointer;
+}
+  
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: yellowgreen;
+    cursor: pointer;
+}
+
+.footer{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+img{
+    width: 100px;
+    height: 100px;;
+    border-radius: 50%;
+    margin: 0px 10px 10px 20px;
+}
+
+.info{
+    text-align: end;
+}
+  
+.fa:hover {
+    opacity: 0.7;
+}
+  
+.fa-facebook-square {
+    font-size: 30px !important;
+    color: blue;
+}
+.fa-github-square {
+    font-size: 30px !important;
+    color: black;
+}
+
+.name {
+    font-weight: bold;
+}
+
+.school{
+    font-style: italic;
+}

@@ -6,42 +6,58 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Color Picker</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 
-  <div class="title">
-    <h1>Color Picker</h1>
-  </div>
-  
-  <div class="content">
-    <div class="result">
-      <div class="color"></div>
-      <div class="hex">
-          <p>#808080</p>
-      </div>
-    </div>
-
-    <div class="picker">
-      <div class="red-item">
-        <div class="red-model"></div>
-        <input id="red-slider" type="range" min="0" max="255" step="1">
-        <span id="red-code">128</span>
-      </div>
-      <div class="green-item">
-          <div class="green-model"></div>
-          <input id="green-slider" type="range" min="0" max="255" step="1">
-          <span id="green-code">128</span>
+  <div class="all">
+      <div class="title">
+          <h1>Color Picker</h1>
         </div>
-        <div class="blue-item">
-            <div class="blue-model"></div>
-            <input id="blue-slider" type="range" min="0" max="255" step="1">
-            <span id="blue-code">128</span>
+        
+        <div class="content">
+          <div class="result">
+            <div class="color">
+                <div class="hex">
+                    #808080
+                </div>
+            </div>
           </div>
-    </div>
-  </div>
+      
+          <div class="picker">
+            <div class="item">
+              <div class="red-model"></div>
+              <input id="red" class="slider" type="range" min="0" max="255" step="1" oninput="changeColor(this);" onchange="changeColor(this);" multiple>
+              <span id="red-code">128</span>
+            </div>
+            <div class="item">
+                <div class="green-model"></div>
+                <input id="green" class="slider" type="range" min="0" max="255" step="1" oninput="changeColor(this);" onchange="changeColor(this);" multiple>
+                <span id="green-code">128</span>
+              </div>
+              <div class="item">
+                  <div class="blue-model"></div>
+                  <input id="blue" class="slider" type="range" min="0" max="255" step="1" oninput="changeColor(this);" onchange="changeColor(this);" multiple>
+                  <span id="blue-code">128</span>
+                </div>
+          </div>
+        </div>
+        
+        <hr>
 
-  <div class="info">
+        <div class="footer">
+          <div class="info">
+              <div class="name">Nguyễn Quốc Vương</div>
+              <div class="school">Ho Chi Minh University of Science</div>
 
+              <a href="https://github.com/nqvuong1998" class="fa fa-github-square"></a>
+              <a href="https://www.facebook.com/nqvuong98" class="fa fa-facebook-square"></a>
+              
+          </div>
+
+          <img src="./images/avatar.jpg"></img>
+          
+        </div>
   </div>
 
   <script src="js/script.js"></script>
