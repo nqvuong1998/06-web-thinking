@@ -8,7 +8,7 @@ let color = {
 function changeColor(event){
     let code = event.value;
     let id = event.id;
-
+    
     let hex = fullColorToHex(color['red'], color['green'], color['blue']);
     color[id]=code;
     document.querySelector("#"+id+"-code").innerHTML=code;
@@ -52,26 +52,20 @@ function getWidth() {
 
 function customize(){
     let width = getWidth();
-
     if(width<=400){
         changeWidthContent(100);
-        changeMarginTopContent(20);
     }
     else if(width<=800){
         changeWidthContent(85);
-        changeMarginTopContent(13);
     }
     else if(width<=1000){
         changeWidthContent(65);
-        changeMarginTopContent(14);
     }
     else if(width<=1200){
         changeWidthContent(45);
-        changeMarginTopContent(12);
     }
     else{
         changeWidthContent(35);
-        changeMarginTopContent(8);
     }
 }
 
@@ -86,11 +80,6 @@ window.addEventListener('resize', function(event){
 function changeWidthContent(percent){
     let style = document.querySelector(".all").style;
     style.width = percent+"%";
-}
-
-function changeMarginTopContent(percent){
-    let style = document.querySelector(".all").style;
-    style.marginTop = percent+"%";
 }
 
 
