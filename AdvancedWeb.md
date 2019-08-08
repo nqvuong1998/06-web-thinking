@@ -263,15 +263,15 @@ Vì Client-side rendering rất phù hợp cho những ứng dụng cần tươn
 
 ## 1.2. ReactJS
 
-### 1.2.1. ReactJS
+### 1.2.1. ReactJS: principles, Component, State và Props, Life Cycle, JSX,...
 
 ### 1.2.2. Create-react-app, NextJS
 
 ### 1.2.3. React Router
 
-### 1.2.4. State Management
+### 1.2.4. State Management: Redux, MobX. Khi nào cần dùng một State Management?
 
-### 1.2.5. Các React Framework
+### 1.2.5. Các React Framework: Ant.design, React Bootstrap, RechartsJS,...
 
 # 2. Bài tập
 
