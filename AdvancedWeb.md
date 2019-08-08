@@ -263,6 +263,10 @@ Vì Client-side rendering rất phù hợp cho những ứng dụng cần tươn
 
 ## 1.2. ReactJS
 
+- https://codeaholicguy.com/2016/03/01/hoc-reactjs-trong-15-phut-phan-1/
+- https://codeaholicguy.com/2016/03/03/hoc-reactjs-trong-15-phut-phan-2/
+- https://codeaholicguy.com/2016/03/08/hoc-reactjs-trong-15-phut-phan-cuoi/
+
 ### 1.2.1. ReactJS: principles, Component, State và Props, Life Cycle, JSX,...
 
 ### 1.2.2. Create-react-app, NextJS
