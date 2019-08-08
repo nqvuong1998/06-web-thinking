@@ -328,3 +328,6 @@ Vì Client-side rendering rất phù hợp cho những ứng dụng cần tươn
 - https://codeaholicguy.com/2016/03/01/hoc-reactjs-trong-15-phut-phan-1/
 - https://codeaholicguy.com/2016/03/03/hoc-reactjs-trong-15-phut-phan-2/
 - https://codeaholicguy.com/2016/03/08/hoc-reactjs-trong-15-phut-phan-cuoi/
+- https://www.agiliq.com/blog/2018/05/understanding-react-state-and-props/
+- https://viblo.asia/p/reactjs-tim-hieu-ve-component-life-cycle-naQZRw4Plvx
+- https://www.tutorialspoint.com/reactjs/reactjs_component_life_cycle
