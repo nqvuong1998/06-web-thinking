@@ -1,0 +1,51 @@
+h1{
+    text-align: center;
+    color: white;
+}
+
+.cog{
+    margin: 10px;
+    margin-bottom: 0;
+    color: gray;
+}
+
+table{
+    margin: auto;
+    color: white;
+}
+
+th{
+    width: 25%;
+}
+
+td{
+    width: 25%;
+}
+
+
+input{
+    width: 100px;
+    height: 25px;
+    border-radius: 5px;
+}
+
+button{
+  background-color: #008CBA; 
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+form{
+    border: 1px solid black;
+    border-radius: 10px;
+    background: black;
+    margin: 5px 10px 5px 10px;
+}
