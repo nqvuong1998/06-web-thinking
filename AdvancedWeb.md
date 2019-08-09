@@ -158,7 +158,7 @@ The OPTIONS method describes the communication options for the target resource.
 
 ### 1.1.5. Restful API là gì? Design Restful API như thế nào?
 
-[Restfull API](https://medium.com/eway/nguyên-tắc-thiết-kế-rest-api-23add16968d7)
+[Restful API](https://medium.com/eway/nguyên-tắc-thiết-kế-rest-api-23add16968d7)
 
 ### 1.1.6. Server Render và Single Page App
 
