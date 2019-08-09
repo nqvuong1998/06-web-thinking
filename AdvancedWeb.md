@@ -263,10 +263,6 @@ Vì Client-side rendering rất phù hợp cho những ứng dụng cần tươn
 
 ## 1.2. ReactJS
 
-- https://codeaholicguy.com/2016/03/01/hoc-reactjs-trong-15-phut-phan-1/
-- https://codeaholicguy.com/2016/03/03/hoc-reactjs-trong-15-phut-phan-2/
-- https://codeaholicguy.com/2016/03/08/hoc-reactjs-trong-15-phut-phan-cuoi/
-
 ### 1.2.1. ReactJS: principles, Component, State và Props, Life Cycle, JSX,...
 
 ### 1.2.2. Create-react-app, NextJS
@@ -331,3 +327,17 @@ Vì Client-side rendering rất phù hợp cho những ứng dụng cần tươn
 - https://www.agiliq.com/blog/2018/05/understanding-react-state-and-props/
 - https://viblo.asia/p/reactjs-tim-hieu-ve-component-life-cycle-naQZRw4Plvx
 - https://www.tutorialspoint.com/reactjs/reactjs_component_life_cycle
+- https://viblo.asia/p/tong-quan-ve-jsx-Qbq5QqBL5D8
+
+- https://github.com/facebook/create-react-app
+- https://viblo.asia/p/nextjs-series-part-1-gioi-thieu-ve-nextjs-Qbq5QAkL5D8
+
+- https://o7planning.org/vi/12139/tim-hieu-ve-react-router-voi-mot-vi-du-co-ban
+
+- https://viblo.asia/p/redux-la-gi-va-tai-sao-can-dung-redux-RnB5pGJJlPG
+- https://o7planning.org/vi/12141/gioi-thieu-ve-redux
+- https://viblo.asia/p/bat-dau-voi-reactjs-phan-3-reactjs-with-redux-ByEZkWjyZQ0
+
+- https://viblo.asia/p/gioi-thieu-ant-design-L4x5xwzblBM
+- https://techblog.vn/tai-sao-chung-ta-nen-dung-react-bootstrap
+- https://techblog.vn/su-dung-modal-trong-react-bootstrap
