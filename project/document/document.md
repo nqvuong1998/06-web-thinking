@@ -1,6 +1,28 @@
 # Tài liệu thiết kế
 
+**Lưu ý:** Đây là tài liệu đặc tả cho **MỌI** chức năng theo yêu cầu của assignment trong module 06 (bao gồm 5 tính năng đã cam kết) chứ không cam kết làm hết chức năng đã đặc tả.
+
 # 1. Đặc tả yêu cầu
+
+Công ty yêu cầu viết một hệ thống chơi game caro với các tính năng:
+
+- Người dùng phải đăng ký tài khoản để có thể tham gia vào hệ thống game, đăng ký được tặng $1000
+
+- Sau khi đăng nhập vào hệ thống, thành viên sẽ thấy danh sách các phòng game caro.
+
+- Thành viên sẽ nhìn thấy tên hiển thị và số tiền của mình ở trên cùng. Khi bấm vô tên của mình sẽ thấy được lịch sử game đấu của chính mình.
+
+- Thành viên có thể tham gia game bằng cách chọn vào phòng đang hiển thị miễn là phòng chưa đầy và số tiền còn lại phù hợp với mức đặt cược
+
+- Thành viên có thể tạo game với 2 loại:
+
+    - Chơi với bot
+
+    - Chơi với người khác: Thành viên tạo mức đặt cược ($0 - $50) và chờ có người đồng ý tham gia chơi chung.
+
+- Khi chơi, thành viên có 30s để thực hiện nước đi. Sau 30s, nếu không thực hiện nước đi thì xem như bỏ lượt. Nếu thành viên tự ý rời phòng coi như thua.
+
+- Khi đang chơi, có thể chat hoặc emoji cho vui.
 
 # 2. Sơ đồ usecase
 
@@ -304,3 +326,6 @@ result: string
     - server: cập nhật board, xử lý AI và gửi về kết quả (nước đi, thắng/thua, số tiền cược tăng/giảm) cho player đó
 
 # 7. Sequence diagram
+
+
+# 8. Prototype
