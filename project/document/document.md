@@ -331,5 +331,52 @@ result: string
 
 # 7. Sequence diagram
 
+## Create room
+
+![](./sequence/createRoom.png)
+
+## Join room
+
+![](./sequence/joinRoom.png)
+
+## Play game
+
+![](./sequence/playGame.png)
+
+## Chat in game
+
+![](./sequence/chatInGame.png)
 
 # 8. Prototype
+
+## Đăng nhập/Đăng ký
+
+![](./prototype/1.png)
+
+## Danh sách phòng game
+
+![](./prototype/2.png)
+
+## Màn hình chơi game
+
+![](./prototype/3.png)
+
+## Lịch sử người chơi
+
+![](./prototype/4.png)
+
+## Màn hình chờ
+
+![](./prototype/5.png)
+
+## Chọn chế độ chơi
+
+![](./prototype/6.png)
+
+## Đặt cược
+
+![](./prototype/7.png)
+
+## Chọn độ khó
+
+![](./prototype/8.png)
