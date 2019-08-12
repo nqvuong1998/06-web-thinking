@@ -1,5 +1,9 @@
 # Tài liệu thiết kế
 
+- Nguyễn Quốc Vương (vuongnq4)
+
+- Lê Thành Công (conglt)
+
 **Lưu ý:** Đây là tài liệu đặc tả cho **MỌI** chức năng theo yêu cầu của assignment trong module 06 (bao gồm 5 tính năng đã cam kết) chứ không cam kết làm hết chức năng đã đặc tả.
 
 # 1. Đặc tả yêu cầu
