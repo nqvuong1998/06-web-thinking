@@ -253,8 +253,54 @@ result: string
     message: update fail
     ```
 
-## 6.2. Thiết kế API cho phần Socket
+## 6.2. Thiết kế cổng cho phần Socket
 
+### Kết nối
 
+- connection: Phát hiện kết nối
+
+- disconnect: Phát hiện ngắt kết nối
+
+### Tạo game
+
+- create-game: 
+
+    - client yêu cầu tạo game mới (message là bet_money)
+    
+    - server trả về game_id, title hiển thị cho tất cả người dùng
+
+- join-game: 
+
+    - client yêu cầu tham gia game (message là game_id) 
+    
+    - server trả về kết quả cho client đó
+
+### Chơi game với người
+
+- play-game: 
+
+    - client: đánh caro hoặc bỏ lượt
+
+    - server: cập nhật board và gửi về kết quả (nước đi, thắng/thua, số tiền cược tăng/giảm) cho cả 2 player
+
+- chat-game:
+
+    - client: gửi nội dung chat
+
+    - server: gửi nội dung vừa nhận cho 2 player
+
+- emoji-game:
+
+    - client: gửi emoji
+
+    - server: gửi emoji vừa nhận cho 2 player
+
+### Chơi game với máy
+
+- play-game-AI:
+
+    - client: đánh caro hoặc bỏ lượt
+
+    - server: cập nhật board, xử lý AI và gửi về kết quả (nước đi, thắng/thua, số tiền cược tăng/giảm) cho player đó
 
 # 7. Sequence diagram
