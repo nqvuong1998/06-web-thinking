@@ -319,7 +319,7 @@ result: string
 
 ### Chơi game với máy
 
-- play-game-AI:
+- play-game-bot:
 
     - client: đánh caro hoặc bỏ lượt
 
