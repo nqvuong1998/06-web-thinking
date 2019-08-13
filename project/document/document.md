@@ -30,7 +30,7 @@ Công ty yêu cầu viết một hệ thống chơi game caro với các tính n
 
 # 2. Sơ đồ usecase
 
-![](./usecase.png)
+![](./media/usecase.png)
 
 # 3. Đối tượng người dùng
 
@@ -43,11 +43,11 @@ Actor trong sơ đồ usecase.
     - Backend: NodeJS
     - Database: MongoDB
 
-![](./architecture.png)
+![](./media/architecture.png)
 
 # 5. Database design
 
-![](./database.png)
+![](./media/database.png)
 
 # 6. Restful API Specification
 
