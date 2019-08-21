@@ -1,43 +1,111 @@
 const userModel = require('../models/users');
-const bcrypt = require('bcrypt'); 
+const userService = require('../services/users');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const redisClient = require('../configs/redis').client;
 
-module.exports = {
- create: function(req, res, next) {
-     console.log(req.body.password);
-  userModel.create({ username: req.body.username, password: req.body.password }, function (err, result) {
-      if (err) {
-        next(err);
-      }
-      else{
-        res.json({status: "success", message: "User added successfully!!!", data: null});
-      }
-       
-    });
- },
+async function create(req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+    var findUser = userService.findExistUser(username);
+    if(findUser==null){
+        let user = new userModel({
+            username: username,
+            password: password
+        });
 
-authenticate: function(req, res, next) {
-userModel.findOne({username:req.body.username}, function(err, userInfo){
-    if (err) {
-        res.json({status: "vvv"});
-        next(err);
-    } else {
+        try{
+            let value = await user.save();
+            res.json({
+                status: "success",
+                message: "User added successfully!!!",
+                data: null
+            });
 
-        if(!userInfo){
-            res.json({status:"error", message: "Invalid username!!!", data:null});
+            await redisClient.sadd("users:username:"+username,value._id);
+
+            await redisClient.hmset("users:"+value._id,{
+                id: value._id,
+                username: username,
+                total_money: value.total_money,
+                win_count: value.win_count,
+                total_count: value.total_count
+            });
+        }
+        catch(err){
+            res.json({
+                status: "error",
+                message: "Error to save user",
+                data: null
+            });
+        }
+    }
+    else{
+        res.status(403);
+        res.json({
+            status: "error",
+            message: "User exists",
+            data: null
+        })
+    }
+}
+
+async function authenticate(req, res) {
+
+    var username = req.body.username;
+    var password = req.body.password;
+    
+    try{
+        var findUser = await userService.findExistUser(username);
+        if(findUser==null){
+            res.json({
+                status: "error",
+                message: "Invalid username!!!",
+                data: null
+            });
         }
         else{
-            if(bcrypt.compareSync(req.body.password, userInfo.password)) {
-
-                const token = jwt.sign({id: userInfo._id, username: userInfo.username}, req.app.get('secretKey'), { expiresIn: '24h' });
-                    
-                res.json({status:"success", message: "user found!!!", data:{user: userInfo, token:token}});
+            if (bcrypt.compareSync(password, findUser.password)){
+                const token = jwt.sign({
+                    id: findUser._id,
+                    username: findUser.username
+                }, req.app.get('secretKey'), {
+                    expiresIn: '12h'
+                });
+    
+                res.json({
+                    status: "success",
+                    message: "User found!!!",
+                    data: {
+                        user_id: findUser._id,
+                        username: findUser.username,
+                        total_money: findUser.total_money,
+                        token: token
+                    }
+                });
             }
-            else{
-                res.json({status:"error", message: "Invalid password!!!", data:null});
+            else {
+                res.json({
+                    status: "error",
+                    message: "Invalid password!!!",
+                    data: null
+                });
             }
         }
     }
-    });
- },
+    catch(err){
+        res.json({
+            status: "error",
+            message: "Something was wrong",
+            data: null
+        });
+    }
+    
+    
+}
+
+
+module.exports = {
+    authenticate: authenticate,
+    create: create
 }

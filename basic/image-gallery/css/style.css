@@ -11,7 +11,7 @@ body {
     background: linear-gradient(to bottom left, #a1c4fd, #c2e9fb);
 }
 
-h2 {
+h2 div {
     color: rgb(5, 5, 121);
     margin-top: 2%;
     text-align: center;
@@ -59,8 +59,8 @@ img:hover {
     color: #fff;
     cursor: pointer;
     display: inline-block;
-      font-family: 'Poppins', sans-serif;
-      font-size: inherit;
+    font-family: 'Poppins', sans-serif;
+    font-size: inherit;
     font-weight: 600;
     margin-bottom: 1rem;
     outline: none;
