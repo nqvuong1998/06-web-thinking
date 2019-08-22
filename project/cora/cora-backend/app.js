@@ -1,12 +1,19 @@
 const express = require('express');
+
+const http=require('http');
+const socketIo=require('socket.io');
+
 const logger = require('morgan');
 //const movies = require('./routes/movies') ;
 const users = require('./routes/users');
+
 const bodyParser = require('body-parser');
 const mongoose = require('./configs/mongo'); //database configuration
 const cors = require('cors');
 const app = express();
 
+const server = http.createServer(app);
+const io=socketIo(server);
 
 app.set('secretKey', 'cora'); // jwt secret token
 
@@ -32,6 +39,24 @@ app.use('/users', users);
 // app.use('/movies', validateUser, movies);
 
 
+//socket
+io.on("connection",function(socket){
+    console.log("New client socket connected");
+
+    socket.on("disconnect",()=>console.log("Client disconnected"));
+
+    socket.on('create-game-from-client',()=>{
+        
+    });
+
+    socket.on('join-game-from-client',()=>{
+        
+    });
+    
+    socket.on('play-game-from-client',()=>{
+        
+    });
+});
 
 // express doesn't consider not found 404 as an error so we need to handle 404 explicitly
 // handle 404 error

@@ -7,48 +7,52 @@ const redisClient = require('../configs/redis').client;
 async function create(req, res) {
     var username = req.body.username;
     var password = req.body.password;
-    var findUser = userService.findExistUser(username);
-    if(findUser==null){
-        let user = new userModel({
-            username: username,
-            password: password
-        });
 
-        try{
-            let value = await user.save();
-            res.json({
-                status: "success",
-                message: "User added successfully!!!",
-                data: null
-            });
-
-            await redisClient.sadd("users:username:"+username,value._id);
-
-            await redisClient.hmset("users:"+value._id,{
-                id: value._id,
+    try{
+        var findUser = await userService.findExistUser(username);
+        if(findUser==null){
+            let user = new userModel({
                 username: username,
-                total_money: value.total_money,
-                win_count: value.win_count,
-                total_count: value.total_count
+                password: password
             });
+    
+                let value = await user.save();
+                res.json({
+                    status: "success",
+                    message: "User added successfully!!!",
+                    data: null
+                });
+    
+                await redisClient.sadd("users:username:"+username,value._id);
+    
+                await redisClient.hmset("users:"+value._id,{
+                    id: value._id,
+                    username: username,
+                    total_money: value.total_money,
+                    win_count: value.win_count,
+                    total_count: value.total_count,
+                    //games: []
+                });
         }
-        catch(err){
+        else{
+            res.status(403);
             res.json({
-                status: "error",
-                message: "Error to save user",
+                status: "fail",
+                message: "User exists",
                 data: null
-            });
+            })
         }
     }
-    else{
-        res.status(403);
+    catch(err){
         res.json({
             status: "error",
-            message: "User exists",
+            message: "Error to save user",
             data: null
-        })
+        });
     }
 }
+
+const gameServices = require('../services/games');
 
 async function authenticate(req, res) {
 
@@ -57,6 +61,7 @@ async function authenticate(req, res) {
     
     try{
         var findUser = await userService.findExistUser(username);
+        gameServices.getPoolCreate();
         if(findUser==null){
             res.json({
                 status: "error",

@@ -20,9 +20,15 @@ const GameSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
+    host_name: {
+        type: String
+    },
     opponent: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    opponent_name: {
+        type: String
     }
 });
 
