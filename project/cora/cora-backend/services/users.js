@@ -13,17 +13,18 @@ function findExistUser(username){
                 let user = await userModel.findOne({username: username}).exec();
 
                 if(!user){
+                    //return null;
                     resolve(null);
                 }
                 else{
-                    await redisClient.sadd("users:username:"+username,user._id);
+                    await redisClient.sadd("users:username:"+username,user._id.toString());
 
                     //get games???
                     //let games = [];
                     //games = await userModel.find().populate('games');
 
                     //???
-                    await redisClient.hmset("users:"+user._id,{
+                    await redisClient.hmset("users:"+user._id.toString(),{
                         id: user._id,
                         username: username,
                         total_money: user.total_money,
@@ -31,7 +32,7 @@ function findExistUser(username){
                         total_count: user.total_count,
                         //games: games
                     });
-
+                    //return user;
                     resolve(user);
                 }
             }
@@ -41,20 +42,61 @@ function findExistUser(username){
                 let user = await userModel.findById(id).exec();
 
                 if(!user){
+                    //return null;
                     resolve(null);
                 }
                 else{
+                    //return user;
                     resolve(user);
                 }
             }
         }
         catch(err){
+            //return err;
             reject(err);
         }
 
     });
 }
 
+function setUserOnline(user_id){
+    return new Promise(async function(resolve,reject){
+        try{
+            let value = await redisClient.get("online:"+user_id);
+            if(value){
+                resolve(false);
+            }
+            else{
+                await redisClient.set("online:"+user_id,"true");
+                resolve(true);
+            }
+        }
+        catch(err){
+            reject(err);
+        }
+    });
+}
+
+function setUserOffline(user_id){
+    return new Promise(async function(resolve,reject){
+        try{
+            let value = await redisClient.get("online:"+user_id);
+            if(value){
+                await redisClient.del("online:"+user_id);
+                resolve(true);
+            }
+            else{
+                resolve(false);
+            }
+        }
+        catch(err){
+            reject(err);
+        }
+    });
+}
+
 module.exports = {
-    findExistUser: findExistUser
+    findExistUser: findExistUser,
+    setUserOnline: setUserOnline,
+    setUserOffline: setUserOffline
 }

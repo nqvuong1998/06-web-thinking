@@ -10,6 +10,7 @@ async function create(req, res) {
 
     try{
         var findUser = await userService.findExistUser(username);
+        console.log(findUser);
         if(findUser==null){
             let user = new userModel({
                 username: username,
@@ -22,11 +23,22 @@ async function create(req, res) {
                     message: "User added successfully!!!",
                     data: null
                 });
-    
-                await redisClient.sadd("users:username:"+username,value._id);
-    
-                await redisClient.hmset("users:"+value._id,{
-                    id: value._id,
+                let id = value._id.toString();
+
+                await redisClient.sadd("users:username:"+username,id);
+                
+                // await redisClient.lpush("mylist",JSON.stringify({
+                //     id: 1,
+                //     title: "x"
+                // }));
+                // await redisClient.lpush("mylist",JSON.stringify({
+                //     id: 1,
+                //     title: "x"
+                // }));
+                // let x = await redisClient.lrange("mylist",0,-1);
+                // console.log(JSON.parse(JSON.stringify(x)));
+                await redisClient.hmset("users:"+id,{
+                    id: id,
                     username: username,
                     total_money: value.total_money,
                     win_count: value.win_count,
@@ -35,9 +47,9 @@ async function create(req, res) {
                 });
         }
         else{
-            res.status(403);
+            //res.status(403);
             res.json({
-                status: "fail",
+                status: "error",
                 message: "User exists",
                 data: null
             })
@@ -61,7 +73,7 @@ async function authenticate(req, res) {
     
     try{
         var findUser = await userService.findExistUser(username);
-        gameServices.getPoolCreate();
+        
         if(findUser==null){
             res.json({
                 status: "error",

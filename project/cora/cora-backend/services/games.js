@@ -3,7 +3,6 @@ const userModel = require('../models/users');
 const gameModel = require('../models/games');
 const userService = require('../services/users');
 const uuid = require('uuid');
-const mongoose = require('mongoose');
 
 function createGameInRedis(message){
     return new Promise(async function(resolve, reject){
@@ -11,19 +10,18 @@ function createGameInRedis(message){
         
         let newGame = {
             id: id,
-            title: "Room's "+message.username,
-            created_at: new Date,
+            title: message.username+" 's room",
+            created_at: (new Date()).toLocaleString(),
             host: message.user_id,
             host_name: message.username,
             opponent: "",
             opponent_name: "",
             result: "",
             bet_money: message.bet_money,
-            is_ready: false
         }
+        
         try{
-            await redisClient.hmset("games:"+id,newGame);
-            await redisClient.set("poolCreate:"+id,"+");
+            await redisClient.hmset("games:false:"+id,newGame);
             resolve(newGame);
         }
         catch(err){
@@ -37,20 +35,17 @@ function updateOpponentGameInRedis(message){
         let id = message.game_id;
 
         try{
-            let result = await redisClient.hgetall('games:'+id);
+            let result = await redisClient.hgetall('games:false:'+id);
+            await redisClient.del('games:false:'+id)
             let opponent = message.user_id;
             let opponent_name = message.username;
 
             result.opponent=opponent;
             result.opponent_name=opponent_name;
 
-            result.is_ready=true;
-
-            let value = await redisClient.hmset("games:"+id,result);
-
-            await redisClient.del("poolCreate:"+id);
-            await redisClient.set("poolRemove:"+id,"-");
-            resolve(value);
+            await redisClient.hmset("games:true:"+id,result);
+            
+            resolve(result);
         }
         catch(err){
             reject(err);
@@ -58,32 +53,50 @@ function updateOpponentGameInRedis(message){
     });
 }
 
-function updateResultGameInRedis(){
-    return new Promise(async function(resolve, reject){
+function checkGameNotReady(message){
+    return new Promise(async function (resolve,reject){
         let id = message.game_id;
 
         try{
-            let result = await redisClient.hgetall('games:'+id);
-            let result_game = message.result;
-
-            result.result=result_game;
-
-            let value = await redisClient.hmset("games:"+id,result);
-            resolve(value);
+            let value = await redisClient.keys('games:false:'+id);
+            //console.log(value.length);
+            if(value.length>0){
+                resolve(true);
+            }
+            else resolve(false);
         }
         catch(err){
-            reject(err);
+            reject(error);
         }
     });
 }
 
-function removeGameInRedis(message){
+// function updateResultGameInRedis(){
+//     return new Promise(async function(resolve, reject){
+//         let id = message.game_id;
+
+//         try{
+//             let result = await redisClient.hgetall('games:'+id);
+//             let result_game = message.result;
+
+//             result.result=result_game;
+
+//             let value = await redisClient.hmset("games:"+id,result);
+//             resolve(value);
+//         }
+//         catch(err){
+//             reject(err);
+//         }
+//     });
+// }
+
+function cancelGameInRedis(message){
     return new Promise(async function(resolve, reject){
         let id = message.game_id;
 
         try{
 
-            await redisClient.del('games:'+id);
+            await redisClient.del('games:false:'+id);
             resolve(null);
         }
         catch(err){
@@ -97,7 +110,7 @@ function insertGameInMongo(message){
         let id = message.game_id;
 
         try{
-            let value = await redisClient.hgetall('games:'+id);
+            let value = await redisClient.hgetall('games:true:'+id);
             value.result = message.result;
             
             let newGame = new gameModel({
@@ -113,7 +126,7 @@ function insertGameInMongo(message){
 
             await newGame.save();
 
-            await removeGameInRedis({game_id: id});
+            await redisClient.del("games:true:"+id);
 
             setHistoryInRedis(newGame);
             
@@ -196,7 +209,7 @@ function getUserInfo(message){
             if(!user){
                 let value = await userModel.findById(id);
 
-                await redisClient.hmset("users:"+value._id,{
+                await redisClient.hmset("users:"+value._id.toString(),{
                     id: value._id,
                     username: value.username,
                     total_money: value.total_money,
@@ -216,29 +229,22 @@ function getUserInfo(message){
     });
 }
 
-function getPoolCreate(){
+function getGameNotReady(){
     return new Promise(async function(resolve, reject){
         try{
-            let listCreate = await redisClient.keys("poolCreate:*");
-            let str = listCreate.toString().split(",").join(" ");
-        
-            await redisClient.del(str);
-            resolve(listCreate);
-        }
-        catch(err){
-            reject(err);
-        }
-    });
-}
-
-function getPoolRemove(){
-    return new Promise(async function(resolve, reject){
-        try{
-            let listRemove = await redisClient.keys("poolRemove:*");
-            let str = listRemove.toString().split(",").join(" ");
-        
-            await redisClient.del(str);
-            resolve(listRemove);
+            let listNotReady = await redisClient.keys("games:false:*");
+            var list = [];
+            if(listNotReady.length!=0){
+                let len = listNotReady.length;
+                for(let i = 0;i<len;i++){
+                    list.push(await redisClient.hgetall(listNotReady[i]));
+                }
+                list.sort(function(a, b){
+                    return new Date(b.created_at) - new Date(a.created_at);
+                });
+                resolve(list);
+            }
+            else resolve([]);
         }
         catch(err){
             reject(err);
@@ -297,15 +303,44 @@ function getRanking(){
     });
 }
 
+function checkWin(){
+    board = [["X", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "E", "E", "X", "O", "E", "E", "E", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "E", "O", "E", "X", "O", "E", "E", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "X", "E", "O", "E", "X", "O", "E", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "E", "O", "E", "X", "E", "X", "O", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "X", "E", "E", "E", "E", "E", "X", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],
+    ["E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E"]
+];
+
+
+
+    board = board.map(function(row){
+        return row.join("");
+    }).join("E");
+    
+   //console.log(/(X{5,5})|O{5,5})/.test(board,toString()));
+}
+
 module.exports = {
     createGameInRedis: createGameInRedis,
     updateOpponentGameInRedis: updateOpponentGameInRedis,
-    updateResultGameInRedis: updateResultGameInRedis,
-    removeGameInRedis: removeGameInRedis,
+    //updateResultGameInRedis: updateResultGameInRedis,
+    cancelGameInRedis: cancelGameInRedis,
     insertGameInMongo: insertGameInMongo,
     updateUserInfo: updateUserInfo,
     getUserInfo: getUserInfo,
-    getPoolCreate: getPoolCreate,
-    getPoolRemove: getPoolRemove
+    getGameNotReady: getGameNotReady,
+    checkGameNotReady: checkGameNotReady,
+    checkWin: checkWin
 }
 
