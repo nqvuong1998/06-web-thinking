@@ -15,6 +15,10 @@ server.listen(4001);
 
 app.set('secretKey', 'cora'); // jwt secret token
 
+const { zeros } = require('mathjs');
+var rows = 16, cols = 16;
+var game_board = [];
+
 app.use(cors());
 // connection to mongodb
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error!'));
@@ -39,7 +43,13 @@ app.use('/users', users);
 
 //socket
 // io.use(function(socket,next){
-//     //socket.handshake.query.token
+//     let token = socket.handshake.query.token;
+//     if(true){
+//         next();
+//     }
+//     else{
+//         next(new Error('authentication error'));
+//     }
 // });
 io.on("connection",socket=>{
     console.log("New client socket connected "+ socket.id);
@@ -80,6 +90,8 @@ io.on("connection",socket=>{
                 let game = await gameServices.updateOpponentGameInRedis(message);
                 socket.join(game.id);
 
+                game_board[game.id]=zeros([parseInt(rows),parseInt(cols)]);
+
                 io.to(game.id).emit("join-game-from-server",{                   status:"ok",
                     game_id: game.id,
                     host: game.host,
@@ -99,19 +111,100 @@ io.on("connection",socket=>{
         }
     });
 
-    // var math = require('mathjs');
-    // // import {
-    // //     zeros, randomInt
-    // //   } from 'mathjs';
-    // var rows = 16, cols = 16;
-    // var board = math.zeros([parseInt(rows),parseInt(cols)]);
-
     socket.on("chat-game-from-client", function(message){
         io.to(message.game_id).emit("chat-game-from-server",message);
     });
 
-    socket.on("play-game-from-client", function(message){
-        io.to(message.game_id).emit("play-game-from-server",message);
+    socket.on("play-game-from-client", async function(message){
+        console.log(message);
+        //let board = game_board[message.game_id];
+        let x = message.x;
+        let y = message.y;
+
+        if(game_board[message.game_id][x][y]>0){
+            io.to(message.socket_id).emit("play-game-from-server",{
+                status: "wrong position"
+            });
+        }
+        else{
+            try{
+                let game = await gameServices.isAllowTurnGame(message);
+                let result = [];
+                let myturn = 1;
+                if(game!=null){
+                    if(game.turn=="X"){
+                        game_board[message.game_id][x][y] = 1;
+                    }
+                    else{
+                        game_board[message.game_id][x][y] = 2;
+                        myturn = 2;
+                    }
+                    result = gameServices.checkWin( game_board[message.game_id], x, y, myturn);
+                    
+                    testDraw =  game_board[message.game_id].map(function(row){
+                        return row.join("");
+                    }).join("");
+                    let isNotDraw = new RegExp('0').test(testDraw);;
+
+                    let newGame = await gameServices.setNewInfoGame(game, result, isNotDraw, false);
+                    
+                    if(newGame.result!=""){
+                        delete game_board[message.game_id];
+                        io.to(message.game_id).emit("play-game-from-server",JSON.stringify({
+                            status: "end game",
+                            info: newGame,
+                            result: result,
+                            x: message.x,
+                            y: message.y
+                        }));
+                    }
+                    else{
+                        io.to(message.game_id).emit("play-game-from-server",JSON.stringify({
+                            status: "continue game",
+                            info: newGame,
+                            x: message.x,
+                            y: message.y
+                        }));
+                    }
+                }
+                else{
+                    console.log("Not turn");
+                    io.to(message.socket_id).emit("play-game-from-server",{
+                        status: "wrong turn"
+                    });
+                }
+            }
+            catch(err){
+                io.to(message.socket_id).emit("play-game-from-server",{
+                    status: "error"
+                });
+            }
+        }
+    });
+
+    socket.on("ignore-turn-from-client", async function(message){
+        try{
+            let game = gameServices.isAllowTurnGame(message);
+            if(game!=null){
+                let newGame = await gameServices.setNewInfoGame(game,[1],true, true)
+
+                io.to(message.socket_id).emit("ignore-turn-from-server",JSON.stringify({
+                    status: "ignore game",
+                    info: newGame
+                }));
+            }
+            else{
+                io.to(message.socket_id).emit("play-game-from-server",{
+                    status: "wrong turn"
+                });
+            }
+            
+        }
+        catch(err){
+            io.to(message.socket_id).emit("ignore-turn-from-server",{
+                status: "error"
+            });
+        }
     });
 
     socket.on("remove-game-from-client", async function(message){
@@ -124,7 +217,7 @@ io.on("connection",socket=>{
     });
 
     setInterval(async function(){
-        //gameServices.checkWin();
+
         var res;
         try{
             var list = await gameServices.getGameNotReady();
@@ -142,6 +235,7 @@ io.on("connection",socket=>{
     },2000);
     
 });
+
 
 //_(board).map(function (row) {return row.join("")}).join("x").test(/(b{5,5})|(w{5,5})/);
 //array[0].map((col, i) => array.map(row => row[i]));
