@@ -1,0 +1,41 @@
+.header{
+    background-color: black;
+    font-family: 'Nunito', sans-serif;
+    padding-top: 20px;
+}
+
+
+
+td{
+    padding:0px !important;
+}
+
+th{
+    padding:0px !important;
+}
+
+.logo{
+    color:#18A0FB;
+    font-size: 4em;
+    font-weight: bold;
+    margin-left: 10%;
+}
+
+.title-login{
+    color:white;
+}
+
+.btn-login{
+    font-weight: bold;
+    height: 30px;
+    padding: 0px 30px;
+    border-radius: 3px !important;
+    min-width: 106px;
+}
+
+.form-login .input-username, .form-login .input-password{
+    border-radius: 5px;
+    height: 30px;
+    border-radius: 3px !important;
+}
+

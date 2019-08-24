@@ -1,0 +1,13 @@
+.board{
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border: 7px solid #c3c3c3;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.information{
+    background-color:grey;
+    margin-bottom: 30px;
+}

@@ -1,0 +1,25 @@
+.container-timer{
+    font-family: "Nunito", sans-serif;
+    font-weight: bold;
+    margin-top: 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    background-color: #dcdcdc;
+
+}
+
+.title-turn{    
+    text-align: end;
+    line-height: 25px;
+}
+
+.timer{
+   background-color: #4A7EFF !important;
+   color: white;
+   text-align: center;
+   border: 2px solid #dcdcdc;
+   border-radius: 50%;
+   width: 25px;
+   height: 25px;
+   line-height: 23px;
+}

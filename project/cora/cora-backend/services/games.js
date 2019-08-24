@@ -287,7 +287,7 @@ function checkWin(board, row, col, turn){
     index++;
   }
 
-  console.log(piece_win)
+  //console.log(piece_win)
 
   if (piece_win.length >= 4) {
     piece_win.push([row, col]);

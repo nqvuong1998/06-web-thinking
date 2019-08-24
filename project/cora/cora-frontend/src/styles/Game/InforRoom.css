@@ -1,0 +1,65 @@
+.info {
+    text-align: center;
+    margin-bottom: 30px;
+
+    position: relative;
+    color: white;
+    font-weight: bold;
+    font-family: "Nunito", sans-serif;
+    font-size: 1em;
+}
+
+
+.box-user-x {
+    font-size: 1.3em;
+    position: absolute;
+    top: 46%;
+    right: 50%;
+    transform: translate( -50%, -50% );
+    padding: 12px 30px 12px 0px;
+}
+
+.box-user-o {
+    font-size: 1.3em;
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    transform: translate( -50%, -50% );
+
+    padding: 12px 30px 12px 220px;
+}
+
+.box-bet-money {
+    position: absolute;
+    top: 62%;
+    font-size: 1.3em;
+    left: 50%;
+    transform: translate( -50%, -50% );
+
+    padding: 12px 30px;
+}
+
+img {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.box-vs {
+    background-color: yellow;
+}
+
+
+.info-room {
+    background-color: aqua;
+}
+
+.emoji {
+    background-color: bisque;
+
+
+}
+
+.bet-money {
+    background-color: brown;
+
+}

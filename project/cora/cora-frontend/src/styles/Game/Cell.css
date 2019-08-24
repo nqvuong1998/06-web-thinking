@@ -1,0 +1,37 @@
+.btn-piece {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #c3c3c3 !important; 
+  font: 2em sans-serif;
+  border-radius: 0px;
+  font-family: "Nunito", sans-serif;
+  font-weight: bolder;
+  padding: 0% !important;
+  line-height: 30px;
+  background-color: white;
+}
+
+.btnX {
+  color: red;
+  
+}
+
+.btnO {
+  color: blue;
+  
+}
+
+.btn-win {
+  background-color: yellow;
+}
+.not-focusable:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn-piece:hover {
+  background-color: gold;
+  cursor: pointer;
+}
+
+
