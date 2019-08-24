@@ -2,7 +2,7 @@ var jwt = require('jsonwebtoken');
 var secret = require('../configs/secret');
 
 function validateUser(req, res, next) {
-    jwt.verify(req.headers['x-access-token'], req.app.get('secretKey'), function (err, decoded) {
+    jwt.verify(req.headers['token'], req.app.get('secretKey'), function (err, decoded) {
         if (err) {
             res.json({
                 status: "error",

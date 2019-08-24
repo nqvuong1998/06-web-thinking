@@ -11,6 +11,7 @@
 
 const asyncRedis = require("async-redis");
 const client = asyncRedis.createClient();
+const multi = client.multi();
  
 client.on("error", function (err) {
     console.log("Error " + err);
@@ -24,5 +25,6 @@ const asyncBlock = async () => {
 };
 
 module.exports={
-    client: client
+    client: client,
+    multi: multi
 }

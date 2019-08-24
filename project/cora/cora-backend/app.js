@@ -2,12 +2,15 @@ const express = require('express');
 const logger = require('morgan');
 //const movies = require('./routes/movies') ;
 const users = require('./routes/users');
+const auth = require('./routes/auth');
 const gameServices = require("./services/games");
 const userServices = require("./services/users");
 const bodyParser = require('body-parser');
 const mongoose = require('./configs/mongo'); //database configuration
 const cors = require('cors');
 const app = express();
+const jwt = require('jsonwebtoken');
+const middleware = require('./middleware/jwtUtils');
 
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
@@ -35,41 +38,45 @@ app.get('/', function (req, res) {
 });
 
 // public route
-app.use('/users', users);
+app.use('/users', auth);
+app.use('/users', middleware.validateUser, users);
 
 // private route
 // app.use('/movies', validateUser, movies);
 
 
 //socket
-// io.use(function(socket,next){
-//     let token = socket.handshake.query.token;
-//     if(true){
-//         next();
-//     }
-//     else{
-//         next(new Error('authentication error'));
-//     }
-// });
+io.use(function(socket,next){
+    let token = socket.handshake.query.token;
+
+    jwt.verify(token, app.get('secretKey'), function (err, decoded) {
+        if (err) {
+            return next(new Error('authentication error'));
+        } else {
+
+            return next();
+        }
+    });
+});
 io.on("connection",socket=>{
-    console.log("New client socket connected "+ socket.id);
+    console.log("Connect: "+ socket.id);
 
     io.to(socket.id).emit("socket-id-from-server",{socket_id: socket.id});
 
     socket.on("disconnect",()=>{
-        console.log(socket.id+' disconnect!');
+        console.log('Disconnect: '+socket.id);
     });
 
     socket.on("create-game-from-client", async function(message){
         try{
             let user = await gameServices.getUserInfo(message);
 
-            if(user.total_money>=message.bet_money){
+            if(parseInt(user.total_money)>=parseInt(message.bet_money)){
                 
                 let game = await gameServices.createGameInRedis(message);
                 socket.join(game.id);
 
-                io.to(message.socket_id).emit("create-game-from-server",{game_id: game.id});
+                io.to(message.socket_id).emit("create-game-from-server",{game_id: game.id, token: "vuong"});
                 
             }
             else{
@@ -88,18 +95,25 @@ io.on("connection",socket=>{
             if(flag==true){
 
                 let game = await gameServices.updateOpponentGameInRedis(message);
-                socket.join(game.id);
 
-                game_board[game.id]=zeros([parseInt(rows),parseInt(cols)]);
+                if(game!=null){
+                    socket.join(game.id);
 
-                io.to(game.id).emit("join-game-from-server",{                   status:"ok",
-                    game_id: game.id,
-                    host: game.host,
-                    host_name: game.host_name,
-                    opponent: game.opponent,
-                    opponent_name: game.opponent_name,
-                    bet_money: game.bet_money    
-                });
+                    game_board[game.id]=zeros([parseInt(rows),parseInt(cols)]);
+
+                    io.to(game.id).emit("join-game-from-server",{               status:"ok",
+                        game_id: game.id,
+                        host: game.host,
+                        host_name: game.host_name,
+                        opponent: game.opponent,
+                        opponent_name: game.opponent_name,
+                        bet_money: game.bet_money    
+                    });
+                }
+
+                else{
+                    io.to(message.socket_id).emit("join-game-from-server",{status:"same"});
+                }
             }
             else{
 
@@ -116,8 +130,6 @@ io.on("connection",socket=>{
     });
 
     socket.on("play-game-from-client", async function(message){
-        console.log(message);
-        //let board = game_board[message.game_id];
         let x = message.x;
         let y = message.y;
 
@@ -144,7 +156,7 @@ io.on("connection",socket=>{
                     testDraw =  game_board[message.game_id].map(function(row){
                         return row.join("");
                     }).join("");
-                    let isNotDraw = new RegExp('0').test(testDraw);;
+                    let isNotDraw = new RegExp('0').test(testDraw);
 
                     let newGame = await gameServices.setNewInfoGame(game, result, isNotDraw, false);
                     
@@ -182,26 +194,26 @@ io.on("connection",socket=>{
         }
     });
 
-    socket.on("ignore-turn-from-client", async function(message){
+    socket.on("ignore-game-from-client", async function(message){
         try{
-            let game = gameServices.isAllowTurnGame(message);
+            let game = await gameServices.isAllowTurnGame(message);
             if(game!=null){
                 let newGame = await gameServices.setNewInfoGame(game,[1],true, true)
 
-                io.to(message.socket_id).emit("ignore-turn-from-server",JSON.stringify({
+                io.to(message.game_id).emit("ignore-game-from-server",JSON.stringify({
                     status: "ignore game",
                     info: newGame
                 }));
             }
             else{
-                io.to(message.socket_id).emit("play-game-from-server",{
+                io.to(message.socket_id).emit("ignore-game-from-server",{
                     status: "wrong turn"
                 });
             }
             
         }
         catch(err){
-            io.to(message.socket_id).emit("ignore-turn-from-server",{
+            io.to(message.socket_id).emit("ignore-game-from-server",{
                 status: "error"
             });
         }

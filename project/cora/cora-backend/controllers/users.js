@@ -64,8 +64,6 @@ async function create(req, res) {
     }
 }
 
-const gameServices = require('../services/games');
-
 async function authenticate(req, res) {
 
     var username = req.body.username;
@@ -121,8 +119,44 @@ async function authenticate(req, res) {
     
 }
 
+const gameServices = require('../services/games');
+
+async function getUserInfo(req, res){
+    try{
+        let user = await gameServices.getUserInfo({user_id: req.params.id});
+        if(user!=null){
+            const token = jwt.sign({
+                id: req.params.id,
+                username: user.username
+            }, req.app.get('secretKey'), {
+                expiresIn: '12h'
+            });
+            
+            res.json({
+                username: user.username,
+                total_money: user.total_money,
+                token: token
+            });
+        }
+        else{
+            res.json({
+                status: "error",
+                message: "none user",
+                data: null
+            });
+        }
+    }
+    catch(err){
+        res.json({
+            status: "error",
+            message: "Something was wrong",
+            data: null
+        });
+    }
+}
 
 module.exports = {
     authenticate: authenticate,
-    create: create
+    create: create,
+    getUserInfo: getUserInfo
 }

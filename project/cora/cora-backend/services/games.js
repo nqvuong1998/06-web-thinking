@@ -37,7 +37,13 @@ function updateOpponentGameInRedis(message){
 
         try{
             let result = await redisClient.hgetall('games:false:'+id);
-            await redisClient.del('games:false:'+id)
+
+            if(message.user_id==result.host){
+                return resolve(null);
+            }
+
+            await redisClient.del('games:false:'+id);
+
             let opponent = message.user_id;
             let opponent_name = message.username;
 
@@ -185,6 +191,9 @@ function getUserInfo(message){
 
             if(!user){
                 let value = await userModel.findById(id);
+                if(!value){
+                    resolve(null);
+                }
 
                 await redisClient.hmset("users:"+value._id.toString(),{
                     id: value._id,
