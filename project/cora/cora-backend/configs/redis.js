@@ -1,14 +1,3 @@
-// var redis = require('async-redis');
-// var client = redis.createClient();
-
-// client.on('connect', function() {
-//     console.log('Redis client connected');
-// });
-
-// client.on('error', function (err) {
-//     console.log('Something went wrong ' + err);
-// });
-
 const asyncRedis = require("async-redis");
 const client = asyncRedis.createClient();
 const multi = client.multi();

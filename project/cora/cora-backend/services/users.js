@@ -59,44 +59,42 @@ function findExistUser(username){
     });
 }
 
-function setUserOnline(user_id){
-    return new Promise(async function(resolve,reject){
-        try{
-            let value = await redisClient.get("online:"+user_id);
-            if(value){
-                resolve(false);
-            }
-            else{
-                await redisClient.set("online:"+user_id,"true");
-                resolve(true);
-            }
-        }
-        catch(err){
-            reject(err);
-        }
-    });
-}
+// function setUserOnline(user_id){
+//     return new Promise(async function(resolve,reject){
+//         try{
+//             let value = await redisClient.get("online:"+user_id);
+//             if(value){
+//                 resolve(false);
+//             }
+//             else{
+//                 await redisClient.set("online:"+user_id,"true");
+//                 resolve(true);
+//             }
+//         }
+//         catch(err){
+//             reject(err);
+//         }
+//     });
+// }
 
-function setUserOffline(user_id){
-    return new Promise(async function(resolve,reject){
-        try{
-            let value = await redisClient.get("online:"+user_id);
-            if(value){
-                await redisClient.del("online:"+user_id);
-                resolve(true);
-            }
-            else{
-                resolve(false);
-            }
-        }
-        catch(err){
-            reject(err);
-        }
-    });
-}
+// function setUserOffline(user_id){
+//     return new Promise(async function(resolve,reject){
+//         try{
+//             let value = await redisClient.get("online:"+user_id);
+//             if(value){
+//                 await redisClient.del("online:"+user_id);
+//                 resolve(true);
+//             }
+//             else{
+//                 resolve(false);
+//             }
+//         }
+//         catch(err){
+//             reject(err);
+//         }
+//     });
+// }
 
 module.exports = {
-    findExistUser: findExistUser,
-    setUserOnline: setUserOnline,
-    setUserOffline: setUserOffline
+    findExistUser: findExistUser
 }

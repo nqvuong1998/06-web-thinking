@@ -44,10 +44,14 @@ app.use('/users', middleware.validateUser, users);
 // private route
 // app.use('/movies', validateUser, movies);
 
+let socket_user = [];
 
 //socket
 io.use(function(socket,next){
     let token = socket.handshake.query.token;
+
+    let user_id = socket.handshake.query.user_id;
+    socket_user[socket.id]=user_id;
 
     jwt.verify(token, app.get('secretKey'), function (err, decoded) {
         if (err) {
@@ -63,8 +67,24 @@ io.on("connection",socket=>{
 
     io.to(socket.id).emit("socket-id-from-server",{socket_id: socket.id});
 
-    socket.on("disconnect",()=>{
-        console.log('Disconnect: '+socket.id);
+    socket.on("disconnect",async function (){
+        console.log('Disconnect: '+socket.id + ': '+socket_user[socket.id]);
+        try{
+            let list_ignore = await gameServices.cancelGameNotReadyAndProcessLoseIfDisconnectInRedis(socket_user[socket.id]);
+
+            let len_ignore = list_ignore.length;
+            for(let i = 0;i<len_ignore;i++){
+                io.to(list_ignore[i].id).emit("ignore-game-from-server",JSON.stringify({
+                    status: "ignore game",
+                    info: list_ignore[i]
+                }));
+            }
+        }
+        catch(err){
+            io.to(socket.id).emit("ignore-game-from-server",{
+                status: "error"
+            });
+        }
     });
 
     socket.on("create-game-from-client", async function(message){
@@ -237,20 +257,15 @@ io.on("connection",socket=>{
             res = {
                 list: list
             };
-            //console.log(list);
         }
         catch(err){
             res = {status: "error"};
         }
         
         socket.broadcast.emit("load-game-from-server",JSON.stringify(res));
-    },2000);
+    },3000);
     
 });
-
-
-//_(board).map(function (row) {return row.join("")}).join("x").test(/(b{5,5})|(w{5,5})/);
-//array[0].map((col, i) => array.map(row => row[i]));
 
 
 // express doesn't consider not found 404 as an error so we need to handle 404 explicitly

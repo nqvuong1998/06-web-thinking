@@ -7,22 +7,31 @@ const uuid = require('uuid');
 function createGameInRedis(message){
     return new Promise(async function(resolve, reject){
         let id = uuid.v1().toString();
-        
+        let date = new Date();
+        let str_date = (date).toLocaleString();
+        let int_date = (date).getTime();
+
         let newGame = {
             id: id,
-            title: message.username+" 's room",
-            created_at: (new Date()).toLocaleString(),
+            title: message.username+"'s room",
+            created_at: str_date,
             host: message.user_id,
             host_name: message.username,
             opponent: "",
             opponent_name: "",
             result: "",
-            bet_money: message.bet_money,
-            turn: "X"
+            bet_money: message.bet_money+"",
+            turn: "X",
+            is_ready: "0"
         }
         
         try{
-            await redisClient.hmset("games:false:"+id,newGame);
+            await redisClient.hmset("games:"+id,newGame);
+            await redisClient.zadd("streams",int_date,JSON.stringify(newGame));
+            
+            //
+            await redisClient.sadd("users:create:"+newGame.host,newGame.id);
+
             resolve(newGame);
         }
         catch(err){
@@ -36,21 +45,25 @@ function updateOpponentGameInRedis(message){
         let id = message.game_id;
 
         try{
-            let result = await redisClient.hgetall('games:false:'+id);
+            let result = await redisClient.hgetall('games:'+id);
 
             if(message.user_id==result.host){
                 return resolve(null);
             }
+            await redisClient.zrem("streams",JSON.stringify(result));
 
-            await redisClient.del('games:false:'+id);
+            //
+            await redisClient.srem("users:create:"+result.host,id);
+            await redisClient.sadd("users:join:"+result.host,id);
 
             let opponent = message.user_id;
             let opponent_name = message.username;
 
             result.opponent=opponent;
             result.opponent_name=opponent_name;
+            result.is_ready="1";
 
-            await redisClient.hmset("games:true:"+id,result);
+            await redisClient.hmset("games:"+id,result);
             
             resolve(result);
         }
@@ -65,9 +78,9 @@ function checkGameNotReady(message){
         let id = message.game_id;
 
         try{
-            let value = await redisClient.keys('games:false:'+id);
+            let value = await redisClient.hget('games:'+id,'is_ready');
             //console.log(value.length);
-            if(value.length>0){
+            if(value=="0"){
                 resolve(true);
             }
             else resolve(false);
@@ -83,8 +96,15 @@ function cancelGameInRedis(message){
         let id = message.game_id;
 
         try{
+            let result = await redisClient.hgetall("games:"+id);
 
-            await redisClient.del('games:false:'+id);
+            await redisClient.zrem("streams",JSON.stringify(result));
+
+            //
+            await redisClient.srem("users:create:"+result.host,id);
+
+            await redisClient.del('games:'+id);
+            
             resolve(null);
         }
         catch(err){
@@ -110,9 +130,9 @@ function insertGameInMongo(game){
 
             await newGame.save();
 
-            await redisClient.del("games:true:"+id);
+            await redisClient.del("games:"+id);
 
-            setHistoryInRedis(newGame);
+            //setHistoryInRedis(newGame);
             
             let userInfo = {
                 user_id: game.host,
@@ -218,70 +238,13 @@ function getUserInfo(message){
 function getGameNotReady(){
     return new Promise(async function(resolve, reject){
         try{
-            let listNotReady = await redisClient.keys("games:false:*");
-            var list = [];
-            if(listNotReady.length!=0){
-                let len = listNotReady.length;
-                for(let i = 0;i<len;i++){
-                    list.push(await redisClient.hgetall(listNotReady[i]));
-                }
-                list.sort(function(a, b){
-                    return new Date(b.created_at) - new Date(a.created_at);
-                });
-                resolve(list);
+            let listNotReady = await redisClient.zrevrange("streams",0,-1);
+            if(listNotReady.length>0){
+                resolve(listNotReady);
             }
-            else resolve([]);
-        }
-        catch(err){
-            reject(err);
-        }
-    });
-}
-
-function setHistoryInRedis(message){
-    return new Promise(async function(resolve, reject){
-        try{
-            
-        }
-        catch(err){
-            reject(err);
-        }
-    });
-}
-
-function getHistory(){
-    return new Promise(async function(resolve, reject){
-        try{
-            
-        }
-        catch(err){
-            reject(err);
-        }
-    });
-}
-
-function setRankingInRedis(message){
-    return new Promise(async function(resolve, reject){
-        let host = message.host;
-        let opponent = message.opponent;
-        try{
-            // let games = [];
-            // games = await redisClient.hget("users:"+host);
-            // //games.push
-            // if(games.length===0){
-
-            // }
-        }
-        catch(err){
-            reject(err);
-        }
-    });
-}
-
-function getRanking(){
-    return new Promise(async function(resolve, reject){
-        try{
-            
+            else{
+                resolve([]);
+            }
         }
         catch(err){
             reject(err);
@@ -402,8 +365,8 @@ function isAllowTurnGame(message){
     return new Promise(async function(resolve, reject){
         let id = message.game_id;
         try{
-            let game = await redisClient.hgetall("games:true:"+id);
-            if((game.turn=="X"&&game.host==message.user_id)||(game.turn=="O"&&game.opponent==message.user_id)){
+            let game = await redisClient.hgetall("games:"+id);
+            if((game.is_ready=="1")&&((game.turn=="X"&&game.host==message.user_id)||(game.turn=="O"&&game.opponent==message.user_id))){
                 resolve(game);
             }
             else{
@@ -448,11 +411,75 @@ function setNewInfoGame(game, result, isNotDraw, isIgnore){
             
             if(isEndGame==true){
                 await insertGameInMongo(game);
+
+                //
+                await redisClient.srem("users:join:"+game.host,game.id);
             }
             else{
-                await redisClient.hmset("games:true:"+id, game);
+                await redisClient.hmset("games:"+id, game);
             }
             resolve(game);
+        }
+        catch(err){
+            reject(err);
+        }
+    });
+}
+
+function setNewInfoGameUserLose(game, result, user_id){
+    return new Promise(async function(resolve,reject){
+        if(result=="draw"){
+            game.result = result;
+        }
+        else if(user_id==game.host){
+            game.result = "lose";
+        }
+        else if(user_id==game.opponent){
+            game.result = "win";
+        }
+
+        try{
+
+            await insertGameInMongo(game);
+
+            //
+            await redisClient.srem("users:join:"+game.host,game.id);
+            
+            resolve(game);
+        }
+        catch(err){
+            reject(err);
+        }
+    });
+}
+
+function cancelGameNotReadyAndProcessLoseIfDisconnectInRedis(user_id){
+    return new Promise(async function (resolve,reject){
+        try{
+            let listCreate = await redisClient.smembers("users:create:"+user_id);
+            let len_create = listCreate.length;
+            for(let i = 0 ; i< len_create ; i++){
+                let game_id = listCreate[i];
+                let game = await redisClient.hgetall("games:"+game_id);
+                await redisClient.zrem("streams",JSON.stringify(game));
+                await redisClient.del("games:"+game_id);
+            }
+            await redisClient.del("users:create:"+user_id);
+
+            let list_ignore = [];
+            let listJoin = await redisClient.smembers("users:join:"+user_id);
+            let len_join = listJoin.length;
+            for(let i = 0;i<len_join;i++){
+                let game_id = listJoin[i];
+                let game = await redisClient.hgetall("games:"+game_id);
+                
+                let newGame = await setNewInfoGameUserLose(game,"lose",user_id);
+                list_ignore.push(newGame);
+            }
+            await redisClient.del("users:join:"+user_id);
+
+            resolve(list_ignore);
+
         }
         catch(err){
             reject(err);
@@ -471,6 +498,7 @@ module.exports = {
     checkGameNotReady: checkGameNotReady,
     checkWin: checkWin,
     isAllowTurnGame: isAllowTurnGame,
-    setNewInfoGame: setNewInfoGame
+    setNewInfoGame: setNewInfoGame,
+    cancelGameNotReadyAndProcessLoseIfDisconnectInRedis: cancelGameNotReadyAndProcessLoseIfDisconnectInRedis
 }
 
