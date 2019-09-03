@@ -85,9 +85,9 @@ io.on("connection",socket=>{
             delete socket_user[socket.id];
         }
         catch(err){
-            io.to(socket.id).emit("ignore-game-from-server",{
+            io.to(socket.id).emit("ignore-game-from-server",JSON.stringify({
                 status: "error"
-            });
+            }));
         }
     });
 
@@ -176,9 +176,9 @@ io.on("connection",socket=>{
         let y = message.y;
 
         if(game_board[message.game_id][x][y]>0){
-            io.to(message.socket_id).emit("play-game-from-server",{
+            io.to(message.socket_id).emit("play-game-from-server",JSON.stringify({
                 status: "wrong position"
-            });
+            }));
         }
         else{
             try{
@@ -223,15 +223,15 @@ io.on("connection",socket=>{
                 }
                 else{
                     console.log("Not turn");
-                    io.to(message.socket_id).emit("play-game-from-server",{
+                    io.to(message.socket_id).emit("play-game-from-server",JSON.stringify({
                         status: "wrong turn"
-                    });
+                    }));
                 }
             }
             catch(err){
-                io.to(message.socket_id).emit("play-game-from-server",{
+                io.to(message.socket_id).emit("play-game-from-server",JSON.stringify({
                     status: "error"
-                });
+                }));
             }
         }
     });
@@ -248,16 +248,16 @@ io.on("connection",socket=>{
                 }));
             }
             else{
-                io.to(message.socket_id).emit("ignore-game-from-server",{
+                io.to(message.socket_id).emit("ignore-game-from-server",JSON.stringify({
                     status: "wrong turn"
-                });
+                }));
             }
             
         }
         catch(err){
-            io.to(message.socket_id).emit("ignore-game-from-server",{
+            io.to(message.socket_id).emit("ignore-game-from-server",JSON.stringify({
                 status: "error"
-            });
+            }));
         }
     });
 
