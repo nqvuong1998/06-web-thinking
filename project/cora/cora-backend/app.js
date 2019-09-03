@@ -78,7 +78,11 @@ io.on("connection",socket=>{
                     status: "ignore game",
                     info: list_ignore[i]
                 }));
+                delete game_board[list_ignore[i].id];
             }
+
+            //
+            delete socket_user[socket.id];
         }
         catch(err){
             io.to(socket.id).emit("ignore-game-from-server",{
@@ -89,55 +93,73 @@ io.on("connection",socket=>{
 
     socket.on("create-game-from-client", async function(message){
         try{
-            let user = await gameServices.getUserInfo(message);
+            
 
-            if(parseInt(user.total_money)>=parseInt(message.bet_money)){
-                
-                let game = await gameServices.createGameInRedis(message);
-                socket.join(game.id);
+            let haveGame = await gameServices.checkHaveCreateOrJoinGame(message.user_id);
 
-                io.to(message.socket_id).emit("create-game-from-server",{game_id: game.id, token: "vuong"});
-                
+            if(haveGame==true){
+                io.to(message.socket_id).emit("create-game-from-server",{status:"have operation"});
             }
             else{
-                io.to(message.socket_id).emit("fail-create-game-from-server",{status:"error"});
-            }      
+                let user = await gameServices.getUserInfo(message);
+                if(parseInt(user.total_money)>=parseInt(message.bet_money) && parseInt(message.bet_money)>=0){
+                
+                    let game = await gameServices.createGameInRedis(message);
+                    socket.join(game.id);
+    
+                    io.to(message.socket_id).emit("create-game-from-server",{status:"ok",
+                    game_id: game.id});
+                    
+                }
+                else{
+                    io.to(message.socket_id).emit("create-game-from-server",{status:"error money"});
+                }      
+            }
         }
         catch(err){
-            io.to(message.socket_id).emit("fail-create-game-from-server",{status:"error"});
+            io.to(message.socket_id).emit("create-game-from-server",{status:"error"});
         }
     });
 
     socket.on("join-game-from-client",async function(message){
         try{
-            let flag = await gameServices.checkGameNotReady(message);
-            
-            if(flag==true){
 
-                let game = await gameServices.updateOpponentGameInRedis(message);
+            let haveGame = await gameServices.checkHaveCreateOrJoinGame(message.user_id);
 
-                if(game!=null){
-                    socket.join(game.id);
-
-                    game_board[game.id]=zeros([parseInt(rows),parseInt(cols)]);
-
-                    io.to(game.id).emit("join-game-from-server",{               status:"ok",
-                        game_id: game.id,
-                        host: game.host,
-                        host_name: game.host_name,
-                        opponent: game.opponent,
-                        opponent_name: game.opponent_name,
-                        bet_money: game.bet_money    
-                    });
-                }
-
-                else{
-                    io.to(message.socket_id).emit("join-game-from-server",{status:"same"});
-                }
+            if(haveGame==true){
+                io.to(message.socket_id).emit("join-game-from-server",{status:"have operation"});
             }
             else{
+                let flag = await gameServices.checkGameNotReady(message);
+            
+                if(flag==true){
 
-                io.to(message.socket_id).emit("join-game-from-server",{status:"full"});
+                    let game = await gameServices.updateOpponentGameInRedis(message);
+
+                    if(game!=null){
+                        socket.join(game.id);
+
+                        game_board[game.id]=zeros([parseInt(rows),parseInt(cols)]);
+
+                        io.to(game.id).emit("join-game-from-server",{               
+                            status:"ok",
+                            game_id: game.id,
+                            host: game.host,
+                            host_name: game.host_name,
+                            opponent: game.opponent,
+                            opponent_name: game.opponent_name,
+                            bet_money: game.bet_money    
+                        });
+                    }
+
+                    else{
+                        io.to(message.socket_id).emit("join-game-from-server",{status:"same"});
+                    }
+                }
+                else{
+
+                    io.to(message.socket_id).emit("join-game-from-server",{status:"full"});
+                }
             }
         }
         catch(err){
@@ -179,7 +201,7 @@ io.on("connection",socket=>{
                     let isNotDraw = new RegExp('0').test(testDraw);
 
                     let newGame = await gameServices.setNewInfoGame(game, result, isNotDraw, false);
-                    
+
                     if(newGame.result!=""){
                         delete game_board[message.game_id];
                         io.to(message.game_id).emit("play-game-from-server",JSON.stringify({
@@ -219,7 +241,7 @@ io.on("connection",socket=>{
             let game = await gameServices.isAllowTurnGame(message);
             if(game!=null){
                 let newGame = await gameServices.setNewInfoGame(game,[1],true, true)
-
+                delete game_board[message.game_id];
                 io.to(message.game_id).emit("ignore-game-from-server",JSON.stringify({
                     status: "ignore game",
                     info: newGame
@@ -244,7 +266,7 @@ io.on("connection",socket=>{
             await gameServices.cancelGameInRedis(message);
         }
         catch(err){
-            io.to(message.socket_id).emit("fail-remove-game-from-client",{status:"error"});
+            io.to(message.socket_id).emit("remove-game-from-server",{status:"error"});
         }
     });
 

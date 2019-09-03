@@ -55,6 +55,7 @@ function updateOpponentGameInRedis(message){
             //
             await redisClient.srem("users:create:"+result.host,id);
             await redisClient.sadd("users:join:"+result.host,id);
+            
 
             let opponent = message.user_id;
             let opponent_name = message.username;
@@ -63,6 +64,7 @@ function updateOpponentGameInRedis(message){
             result.opponent_name=opponent_name;
             result.is_ready="1";
 
+            await redisClient.sadd("users:join:"+result.opponent,id);
             await redisClient.hmset("games:"+id,result);
             
             resolve(result);
@@ -78,9 +80,11 @@ function checkGameNotReady(message){
         let id = message.game_id;
 
         try{
-            let value = await redisClient.hget('games:'+id,'is_ready');
-            //console.log(value.length);
-            if(value=="0"){
+            let value = await redisClient.hgetall('games:'+id);
+            
+            let user = await getUserInfo(message);
+
+            if(value.is_ready=="0" && parseInt(user.total_money)>=parseInt(value.bet_money)){
                 resolve(true);
             }
             else resolve(false);
@@ -414,6 +418,7 @@ function setNewInfoGame(game, result, isNotDraw, isIgnore){
 
                 //
                 await redisClient.srem("users:join:"+game.host,game.id);
+                await redisClient.srem("users:join:"+game.opponent,game.id);
             }
             else{
                 await redisClient.hmset("games:"+id, game);
@@ -444,8 +449,29 @@ function setNewInfoGameUserLose(game, result, user_id){
 
             //
             await redisClient.srem("users:join:"+game.host,game.id);
+            await redisClient.srem("users:join:"+game.opponent,game.id);
             
             resolve(game);
+        }
+        catch(err){
+            reject(err);
+        }
+    });
+}
+
+function checkHaveCreateOrJoinGame(user_id){
+    return new Promise(async function(resolve,reject){
+        try{
+            let listCreate = await redisClient.smembers("users:create:"+user_id);
+            let len_create = listCreate.length;
+            let listJoin = await redisClient.smembers("users:join:"+user_id);
+            let len_join = listJoin.length;
+
+            if(len_create > 0 || len_join > 0){
+                resolve(true);
+            }
+            else resolve(false);
+
         }
         catch(err){
             reject(err);
@@ -499,6 +525,7 @@ module.exports = {
     checkWin: checkWin,
     isAllowTurnGame: isAllowTurnGame,
     setNewInfoGame: setNewInfoGame,
-    cancelGameNotReadyAndProcessLoseIfDisconnectInRedis: cancelGameNotReadyAndProcessLoseIfDisconnectInRedis
+    cancelGameNotReadyAndProcessLoseIfDisconnectInRedis: cancelGameNotReadyAndProcessLoseIfDisconnectInRedis,
+    checkHaveCreateOrJoinGame: checkHaveCreateOrJoinGame
 }
 

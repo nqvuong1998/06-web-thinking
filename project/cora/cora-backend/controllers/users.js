@@ -8,6 +8,19 @@ async function create(req, res) {
     var username = req.body.username;
     var password = req.body.password;
 
+    let isValidUsername = new RegExp('^[^-\\s]{4,8}$').test(username);
+
+    let isValidPassword = new RegExp('(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,16}').test(password);
+
+    if(!isValidUsername || !isValidPassword){
+        res.json({
+            status: "error",
+            message: "Error to save user",
+            data: null
+        });
+        return;
+    }
+
     try{
         var findUser = await userService.findExistUser(username);
         console.log(findUser);
